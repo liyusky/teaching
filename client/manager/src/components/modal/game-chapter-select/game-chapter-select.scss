@@ -1,0 +1,74 @@
+// include module
+@import '../../../../dependencies/sass/_flex.scss';
+@import '../../../../dependencies/sass/_unit.scss';
+// current sass
+.game-chapter-select {
+  width: 740px;
+  height: 540px;
+  background-color: #fff;
+  border-radius: 5px;
+  .select-header {
+    @include vertical_center_horizontal_between();
+    width: 100%;
+    height: 55px;
+    padding: {
+      top: 5px;
+      left: 15px;
+    }
+    .header-title {
+      @include vertical_center();
+      width: 300px;
+      height: 100%;
+      .title-main {
+        font-size: 15px;
+        color: #333;
+      }
+    }
+    .header-close {
+      @include center();
+      width: 50px;
+      height: 50px;
+      font-size: 24px;
+    }
+  }
+  .select-list {
+    width: 100%;
+    height: 485px;
+    padding: {
+      bottom: 5px;
+      left: 10px;
+      right: 10px;
+    }
+    .list-item {
+      width: 180px;
+      height: 70px;
+      padding: 5px;
+      .item-wrap {
+        @include vertical_center_horizontal_between();
+        width: 170px;
+        height: 50px;
+        border: 1px solid #cdcdcd;
+        border-radius: 5px;
+        color: #333;
+        padding: 5px;
+        .wrap-message {
+          @include vertical_center();
+          height: 40px;
+          font-size: 15px;
+          width: 100%;
+          padding: {
+            left: 5px;
+            top: 5px;
+            bottom: 5px;
+          }
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      .item-wrap:hover {
+        background-color: #eee;
+      }
+    }
+  }
+}

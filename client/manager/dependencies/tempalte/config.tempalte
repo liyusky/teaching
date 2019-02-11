@@ -1,0 +1,8 @@
+module.exports = {
+  note: 'SITE_NOTE',
+  source: SITE_SOURCE,
+  router: SITE_ROUTER,
+  modules: SITE_MODULES,
+  components: SITE_COMPONENTS,
+  example: SITE_EXAMPLE
+}

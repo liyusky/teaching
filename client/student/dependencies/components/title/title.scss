@@ -1,0 +1,23 @@
+// include module
+@import '../../sass/_flex.scss';
+@import '../../sass/_unit.scss';
+// current sass
+.title {
+  @include vertical_center();
+  width: 100%;
+  height: 56px;
+
+  padding: {
+    left: 30px;
+    right: 30px;
+  }
+
+  font-size: 24px;
+  color: #3e3e3e;
+
+  i {
+    margin: {
+      left: 10px;
+    }
+  }
+}

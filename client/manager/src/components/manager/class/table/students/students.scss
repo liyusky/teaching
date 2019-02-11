@@ -1,0 +1,70 @@
+// include module
+@import '../../../../../../dependencies/sass/_flex.scss';
+@import '../../../../../../dependencies/sass/_unit.scss';
+// current sass
+.students {
+  position: relative;
+  @include vertical_direction();
+  flex-grow: 1;
+  width: 100%;
+  min-width: 800px;
+  padding: {
+    left: 25px;
+    bottom: 20px;
+  }
+  font-size: 12px;
+
+  .students-header {
+    width: 100%;
+    height: 45px;
+    background-color: #e7e7e7;
+    color: #9e9e9e;
+    font-size: 14px;
+    th {
+      height: 45px;
+    }
+  }
+  .students-content {
+    @include vertical_direction();
+    width: 100%;
+    flex-grow: 1;
+    overflow-y: scroll;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    table {
+      height: auto;
+      tr {
+        background-color: #e7e7e7;
+        width: 100%;
+        height: 35px;
+        td {
+          height: 35px;
+          .content-show-detail {
+            width: 40px;
+            height: 24px;
+            background-color: #23bcbb;
+            color: #fff;
+            border-radius: 3px;
+          }
+          .iconfont {
+            color: #137c1a;
+          }
+        }
+      }
+    }
+  }
+  .students-content::-webkit-scrollbar {
+    width: 0 !important
+  }
+  .table-content-disable {
+    background-color: #9e9e9e !important;
+
+    .content-show-detail {
+      background-color: #585555 !important;
+    }
+
+    .iconfont {
+      color: #d53333 !important;
+    }
+  }
+}

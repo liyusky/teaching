@@ -1,0 +1,192 @@
+@import '../../../dependencies/sass/_flex.scss';
+@import '../../../dependencies/sass/_unit.scss';
+.inputs {
+  @include vertical_center();
+  width: 100%;
+  height: 100%;
+  background-color: #fff;
+  padding: {
+    left: 20px;
+  }
+  .left {
+    @include vertical_center();
+    height: 100%;
+    width: 15%;
+    .left-icon {
+      margin: {
+        right: 21px;
+      }
+      font-size: 12px;
+      color: #4d7bfe;
+    }
+    .left-text {
+      width: 100%;
+      font-size: 14px;
+      color: #333333;
+    }
+  }
+  .right {
+    @include vertical_center();
+    flex: 1;
+    height: 100%;
+    .right-center {
+      @include vertical_center();
+      height: 100%;
+      font-size: 30px;
+      color: #333333;
+    }
+    .right-input {
+      flex: 1;
+      height: 100%;
+      font-size: 14px;
+      color: #333333;
+      overflow-x: auto;
+      background-color: transparent;
+    }
+    input::-webkit-input-placeholder {
+      font-size: 14px;
+      color: #999999; 
+    }
+    .right-icon {
+      margin: {
+        left: 15px;
+      }
+      font-size: 14px;
+      color: #bfbfbf;
+    }
+    .right-text {
+      @include vertical_center();
+      height: 100%;
+      margin: {
+        left: 15px;
+      }
+      font-size: 14px;
+      color: #333333;
+    }
+    .right-switch {
+      @include vertical_center();
+      $param: (flex flex)  (justifyContent flex-start);
+      @include flexSet($param);
+      width: 102px;
+      height: 40px;
+      padding: {
+        left: 3px;
+        right: 3px;
+      }
+      background: #666;
+      border-radius: 30px;
+      .switch-btn {
+        width: 56px;
+        height: 40;
+        background: #fff;
+        border-radius: 50%;
+      }
+    }
+    .right-image {
+      width: 115px;
+      height: 100%;
+      img {
+        width: 100%;
+        height: 100%;
+        cursor: pointer;
+      }
+    }
+    .right-sms {
+      width: 110px;
+      height: 26px;
+      margin: {
+        right: 5px;
+      }
+      color: #0084ff;
+      border: 1px solid #0084ff;
+      border-radius: 13px;
+    }
+    .right-sex {
+      height: 100%;
+      font-size: 16px;
+      Vertical-align: middle;
+      .sex-item {
+        @include center();
+        width: 60px;
+        height: 100%;
+        float: left;
+        span {
+          line-height: 16px;
+        }
+      }
+    }
+    div.switch-active {
+      $param: (flex flex)  (justifyContent flex-end);
+      @include flexSet($param);
+      background-color: #4d7bfe;
+    }
+  }
+}
+.default {
+  .left {
+    width: 0;
+  }
+}
+.center {
+  .left {
+    width: 0;
+  }
+  .right-input {
+    text-align: center;
+  }
+}
+.icon {
+  .left {
+    width: auto;
+    .left-icon {
+      margin: {
+        right: 18px;
+      }
+      font-size: 14px;
+      color: #999;
+    }
+  }
+  .right {
+    input::-webkit-input-placeholder {
+      font-size: 18px;
+      color: #cccccc;
+    }
+  }
+}
+.text {
+
+}
+.text-icon {
+  .left {
+    width: 15%;
+  }
+}
+.switch {
+  .left {
+    width: 15%;
+  }
+  .right {
+    $param: (flex flex)  (justifyContent flex-end);
+    @include flexSet($param);
+    .right-input {
+      display: none;
+    }
+  }
+}
+.slide {
+  .left {
+    width: 20%;
+    .left-text {
+      font-size: 14px;
+      color: #333333;
+    }
+  }
+  .right {
+    $param: (flex flex)  (justifyContent flex-end);
+    @include flexSet($param);
+    .right-input {
+      flex: 1;
+      text-align: right;
+    }
+  }
+}

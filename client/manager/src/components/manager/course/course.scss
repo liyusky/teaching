@@ -1,0 +1,29 @@
+// include module
+@import '../../../../dependencies/sass/_flex.scss';
+@import '../../../../dependencies/sass/_unit.scss';
+// current sass
+.course {
+  @include vertical_direction();
+  flex-grow: 1;
+
+  .course-nav {
+    @include vertical_center_horizontal_between();
+    width: 100%;
+    height: 72px;
+    min-height: 72px;
+
+    padding: {
+      bottom: 12px;
+      left: 20px;
+      right: 20px;
+    }
+    .nav-btn {
+      height: 40px;
+      i {
+        margin: {
+          right: 5px;
+        }
+      }
+    }
+  }
+}

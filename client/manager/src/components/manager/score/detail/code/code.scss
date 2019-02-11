@@ -1,0 +1,163 @@
+// include module
+@import '../../../../../../dependencies/sass/_flex.scss';
+@import '../../../../../../dependencies/sass/_unit.scss';
+// current sass
+.code {
+  width: 100%;
+  .code-record {
+    width: 100%;
+    height: 500%;
+    .record-table {
+      position: relative;
+      @include vertical_direction();
+      flex-grow: 1;
+      width: 100%;
+      min-width: 800px;
+      padding: {
+        left: 20px;
+        right: 10px;
+        bottom: 20px;
+      }
+      th, td {
+        text-align: center;
+      }
+      .table-header {
+        width: 100%;
+        height: 45px;
+        background-color: #e7e7e7;
+        color: #9e9e9e;
+        th {
+          height: 45px;
+        }
+      }
+      .table-content {
+        @include vertical_direction();
+        width: 100%;
+        flex-grow: 1;
+        overflow-y: scroll;
+        overflow: -moz-scrollbars-none;
+        -ms-overflow-style: none;
+        table {
+          height: auto;
+          tr {
+            width: 100%;
+            height: 54px;
+            background-color: #e7e7e7;
+            td {
+              height: 54px;
+              .content-show-detail {
+                width: 50px;
+                height: 30px;
+                background-color: #23bcbb;
+                color: #fff;
+                border-radius: 3px;
+              }
+              .content-btn {
+                width: 100%;
+                height: 52px;
+                background-color: transparent;
+              }
+  
+              .iconfont {
+                color: #137c1a;
+              }
+            }
+          }
+        }
+      }
+      .table-content::-webkit-scrollbar {
+        width: 0 !important
+      }
+      .table-content-disable {
+        background-color: #9e9e9e !important;
+  
+        .content-show-detail {
+          background-color: #585555 !important;
+        }
+  
+        .iconfont {
+          color: #d53333 !important;
+        }
+      }
+    }
+    .record-roll-back {
+      @include center();
+      width: 100%;
+      height: 20px;
+      color: #fff;
+      background-color: #174141;
+      font-size: 10px;
+    }
+  }
+
+  .record-code {
+    width: 100%;
+    padding: {
+      left: 80px;
+      right: 80px;
+    }
+    .code-title {
+      width: 100%;
+      height: 80px;
+      font-size: 28px;
+      line-height: 80px;
+    }
+    .code-content {
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #3e3e3e;
+      padding: {
+        left: 40px;
+      }
+    }
+  }
+
+  .record-result {
+    width: 100%;
+    padding: {
+      left: 80px;
+      right: 80px;
+    }
+    .result-title {
+      width: 100%;
+      height: 80px;
+      font-size: 28px;
+      line-height: 80px;
+    }
+    .result-content {
+      width: 100%;
+      height: 150px;
+      resize: none;
+      border-radius: 5px;
+      border: 1px solid #3e3e3e;
+      padding: 10px;
+    }
+  }
+
+  .record-output {
+    width: 100%;
+    padding: {
+      left: 80px;
+      right: 80px;
+    }
+    .output-title {
+      width: 100%;
+      height: 80px;
+      font-size: 28px;
+      line-height: 80px;
+    }
+    .output-content {
+      width: 100%;
+      height: 150px;
+      resize: none;
+      border-radius: 5px;
+      border: 1px solid #3e3e3e;
+      padding: 10px;
+    }
+  }
+}
+
+.hljs ul li::before {
+  content: counter();
+  display: block;
+}

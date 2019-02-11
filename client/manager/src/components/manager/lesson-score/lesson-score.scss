@@ -1,0 +1,67 @@
+// include module
+@import '../../../../dependencies/sass/_flex.scss';
+@import '../../../../dependencies/sass/_unit.scss';
+// current sass
+.lesson-score {
+  @include vertical_direction();
+  flex-grow: 1;
+  .score-nav {
+    @include vertical_center_horizontal_between();
+    width: 100%;
+    height: 72px;
+    min-height: 72px;
+  
+    padding: {
+      bottom: 12px;
+      left: 20px;
+      right: 20px;
+    }
+    .nav-select {
+      height: 40px;
+      .select-item {
+        @include center();
+        height: 100%;
+        font-size: 15px;
+        padding: {
+          left: 15px;
+          right: 15px;
+        }
+        margin: {
+          right: 10px;
+        }
+        color: #6c72fe;
+        border: 1px solid #6c72fe;
+        border-radius: 3px;
+      }
+    }
+  }
+  .score-chapters {
+    width: 100%;
+    min-height: 72px;
+
+    padding: {
+      bottom: 12px;
+      right: 20px;
+    }
+    .chapters-item {
+      @include center();
+      height: 40px;
+      font-size: 15px;
+      padding: {
+        left: 15px;
+        right: 15px;
+      }
+      margin: {
+        top: 12px;
+        left: 20px;
+      }
+      color: #6c72fe;
+      border: 1px solid #6c72fe;
+      border-radius: 3px;
+    }
+    .selected {
+      color: #fff!important;
+      background-color: #6c72fe!important;
+    }
+  }
+}

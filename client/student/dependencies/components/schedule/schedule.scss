@@ -1,0 +1,35 @@
+// include module
+@import '../../sass/_flex.scss';
+@import '../../sass/_unit.scss';
+// current sass
+.schedule {
+  @include horizontal_center();
+  width: 100%;
+  height: 20px;
+  background-color: transparent;
+  .schedule-rail {
+    position: relative;
+    width: 90%;
+    height: 20px;
+    border-radius: 10px;
+    background-color: #bfbfc1;
+    .rail-line {
+      position: absolute;
+      z-index: 1;
+      width: 75%;
+      height: 100%;
+      background-color: #22d7bb;
+      border-radius: 10px;
+    }
+    .rail-num {
+      position: absolute;
+      z-index: 2;
+      @include center();
+      width: 100%;
+      height: 100%;
+      font-size: 15px;
+      color: #fff;
+    }
+  }
+
+}

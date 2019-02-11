@@ -1,0 +1,38 @@
+// include module
+@import '../../../../dependencies/sass/_flex.scss';
+@import '../../../../dependencies/sass/_unit.scss';
+// current sass
+.homework {
+  @include vertical_direction();
+  flex-grow: 1;
+  .homework-nav {
+    @include vertical_center_horizontal_between();
+    width: 100%;
+    height: 72px;
+    min-height: 72px;
+
+    padding: {
+      bottom: 12px;
+      left: 20px;
+      right: 20px;
+    }
+    .nav-select {
+      height: 40px;
+      .select-item {
+        @include center();
+        height: 100%;
+        font-size: 15px;
+        padding: {
+          left: 15px;
+          right: 15px;
+        }
+        margin: {
+          right: 10px;
+        }
+        color: #6c72fe;
+        border: 1px solid #6c72fe;
+        border-radius: 3px;
+      }
+    }
+  }
+}

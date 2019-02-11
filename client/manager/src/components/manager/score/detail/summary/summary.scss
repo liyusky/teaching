@@ -1,0 +1,167 @@
+// include module
+@import '../../../../../../dependencies/sass/_flex.scss';
+@import '../../../../../../dependencies/sass/_unit.scss';
+// current sass
+.summary {
+  width: 100%;
+  padding: {
+    left: 20px;
+    right: 20px;
+  }
+  .summary-statistics {
+    @include vertical_center_horizontal_between();
+    width: 100%;
+    height: 54px;
+    .statistics-tip {
+      @include vertical_center();
+      height: 100%;
+      font-size: 22px;
+      color: #3e3e3e;
+    }
+    .statistics-schedule {
+      @include center();
+      flex-grow: 1;
+      height: 100%;
+      .schedule {
+        position: relative;
+        width: 90%;
+        height: 20px;
+        border-radius: 10px;
+        background-color: #bfbfc1;
+        .schedule-line {
+          position: absolute;
+          z-index: 1;
+          width: 75%;
+          height: 100%;
+          background-color: #22d7bb;
+          border-radius: 10px;
+        }
+        .schedule-num {
+          position: absolute;
+          z-index: 2;
+          @include center();
+          width: 100%;
+          height: 100%;
+          font-size: 15px;
+          color: #fff;
+        }
+      }
+    }
+  }
+  .detail-content {
+    width: 100%;
+    padding: {
+      left: 20px;
+      right: 20px;
+    }
+
+    .content-panel {
+      width: 100%;
+      margin: {
+        bottom: 25px;
+      }
+      .panel-title {
+        @include vertical_center();
+        width: 100%;
+        height: 48px;
+        font-size: 20px;
+        font-weight: 900;
+        color: #000;
+      }
+      table {
+        width: 100%;
+        tr {
+          width: 100%;
+          height: 40px;
+          th, td {
+            vertical-align: middle;
+            text-align: center;
+            border: none;
+          }
+          th {
+            color: #3e3e3e;
+            font-size: 18px;
+          }
+          td {
+            color: #939393;
+          }
+          th:first-child, td:first-child {
+            width: 50%;
+            text-align: left;
+            padding: {
+              left: 40px;
+            }
+          }
+          th:nth-child(2), td:nth-child(2) {
+            width: 50%;
+            text-align: right;
+            padding: {
+              right: 40px;
+            }
+          }
+        }
+      }
+    }
+
+
+
+  }
+  .detail-valuation {
+    width: 100%;
+    height: auto;
+    line-height: 30px;
+    word-wrap:break-word;
+    word-break:break-all;
+    overflow: hidden;
+    margin: {
+      bottom: 30px;
+    }
+  }
+  .detail-comment {
+    width: 100%;
+    height: auto;
+    margin: {
+      bottom: 30px;
+    }
+    .comment-title {
+      @include vertical_center();
+      width: 100%;
+      height: 54px;
+    }
+    .comment-input {
+      width: 100%;
+      height: 170px;
+      padding: {
+        top: 10px;
+        bottom: 10px;
+        left: 10px;
+        right: 10px;
+      }
+      border: 1px solid #d3ded3;
+      border-radius: 5px;
+      line-height: 30px;
+      resize: none;
+    }
+  }
+  .detail-btns {
+    @include vertical_center_horizontal_between();
+    width: 100%;
+    height: 44px;
+    padding: {
+      left: 20px;
+      right: 10px;
+    }
+    .btn {
+      @include center();
+      width: 90px;
+      height: 26px;
+      border-radius: 13px;
+    }
+    .btn-update {
+      background-color: #567ccb;
+    }
+    .btn-submit {
+      background-color: #3d5e98;
+    }
+  }
+}

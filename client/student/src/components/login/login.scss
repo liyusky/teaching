@@ -1,0 +1,143 @@
+// include module
+@import '../../../dependencies/sass/_flex.scss';
+@import '../../../dependencies/sass/_unit.scss';
+// current sass
+.empower {
+  position: relative;
+  @include center();
+  width: 100vw;
+  height: 100vh;
+  &-bg {
+    background-color: #b8e5f8;
+  }
+  &-area {
+    width: 432px;
+    height: 408px;
+    background-color: #fff;
+    padding: {
+      left: 40px;
+      right: 40px;
+    }
+    border-radius: 5px;
+    .area-logo {
+      @include column_center_between();
+      width: 100%;
+      height: 140px;
+      padding: {
+        top: 30px;
+      }
+      .logo-image {
+        width: auto;
+        height: 70px;
+      }
+      .logo-tip {
+        height: 30px;
+        font-size: 22px;
+        color: #0084ff;
+      }
+    }
+    .area-input-list {
+      width: 100%;
+      padding: {
+        top: 16px;
+      }
+      .list-item {
+        @include vertical_center_horizontal_between();
+        height: 50px;
+        border-radius: 5px;
+        margin: {
+          bottom: 10px;
+        }
+        .item-input {
+          flex-grow: 1;
+          height: 100%;
+          font-size: 14px;
+          color: #333333;
+          overflow-x: auto;
+          background-color: transparent;
+          padding: {
+            left: 10px;
+            right: 10px;
+          }
+        }
+        .item-image {
+          width: 115px;
+          height: 100%;
+          img {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+          }
+        }
+        .item-btn {
+          width: 110px;
+          height: 30px;
+          margin: {
+            right: 5px;
+          }
+          background-color: #0084ff;
+          color: #fff;
+          border-radius: 13px;
+          cursor: pointer;
+        }
+        .item-input::-webkit-input-placeholder {
+          font-size: 14px;
+          color: #999999;
+        }
+      }
+    }
+    .area-operation {
+      @include vertical_center_horizontal_between();
+      width: 100%;
+      height: 30px;
+      font-size: 12px;
+      .operation-btn {
+        height: 100%;
+        padding: {
+          left: 10px;
+          right: 10px;
+        }
+        background-color: #fff;
+      }
+      .btn-left {
+        color: #5993fa;
+      }
+    }
+    .area-btn {
+      width: 100%;
+      height: 40px;
+      background-color: #0084ff;
+      color: #fff;
+      border-radius: 5px;
+      margin: {
+        top: 20px;
+      }
+      font-size: 15px;
+    }
+    .area-mode {
+      @include center();
+      width: 100%;
+      height: 40px;
+      margin: {
+        top: 10px;
+      }
+      button {
+        height: 100%;
+        padding: {
+          left: 10px;
+          right: 10px;
+        }
+        background-color: #fff;
+      }
+    }
+  }
+  .login {
+    height: 484px;
+  }
+  .register {
+    height: 534px;
+  }
+  .forget-password {
+    height: 534px;
+  }
+}

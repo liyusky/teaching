@@ -1,0 +1,42 @@
+// include module
+@import '../../sass/_flex.scss';
+@import '../../sass/_unit.scss';
+// current sass
+.btn {
+  .addition {
+    height: 100%;
+    font-size: 15px;
+    padding: {
+      left: 15px;
+      right: 15px;
+    }
+    color: #fff;
+    background-color: #6c72fe;
+    border-radius: 3px;
+  }
+}
+
+.operation {
+  @include horizontal_end();
+  .confirm, .cancel {
+    height: 100%;
+    padding: {
+      left: 15px;
+      right: 15px;
+    }
+    font-size: 14px;
+    color: #fff;
+  }
+
+  .confirm {
+    background-color: #137c1a;
+  }
+
+  .cancel {
+    background-color: #d53333;
+    margin: {
+      left: 20px;
+    }
+  }
+}
+

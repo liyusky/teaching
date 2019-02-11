@@ -1,0 +1,40 @@
+// include module
+@import '../../sass/_flex.scss';
+@import '../../sass/_unit.scss';
+// current sass
+.search-bar {
+  @include vertical_center_horizontal_between();
+  width: 320px;
+  height: 36px;
+  font-size: 14px;
+  .bar-tip {
+    @include center();
+    width: 90px;
+    height: 100%;
+    border: 1px solid #cecece;
+    i {
+      margin: {
+        left: 5px;
+      }
+    }
+  }
+  .search-input {
+    width: 200px;
+    height: 100%;
+    border: {
+      top: 1px solid #cecece;
+      left: 1px solid #cecece;
+      bottom: 1px solid #cecece;
+    }
+    padding: {
+      left: 10px;
+    }
+  }
+  .search-btn {
+    width: 60px;
+    height: 36px;
+    background-color: #23bcbb;
+    border-radius: 0px;
+    color: #fff;
+  }
+}

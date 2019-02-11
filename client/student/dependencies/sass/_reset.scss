@@ -1,0 +1,97 @@
+@import './_unit.scss';
+* {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  box-sizing: border-box;
+  border: none;
+  outline: none;
+  font-family: 'pingfang', PingFangSC-Thin, sans-serif;
+}
+
+ol, ul {
+  list-style: none;
+}
+
+a {
+  text-decoration: none;
+  color: #333;
+}
+
+svg, img {
+  width: 100%;
+  height: 100%;
+  outline: none;
+  border: none;
+}
+
+html {
+  width: 100vw;
+  height: 100vh;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+
+html::-webkit-scrollbar {
+  width: 0 !important
+}
+
+input, textarea {
+  letter-spacing: 1.5px;
+}
+
+textarea {
+  resize: none;
+  overflow-x: hidden;
+  -ms-overflow-style: none;
+  overflow: -moz-scrollbars-none;
+}
+
+textarea::-webkit-scrollbar {
+  width: 0 !important
+}
+
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none !important;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+table {
+  border-collapse: collapse;
+}
+th,
+td {
+  border: 1px solid #d3d3d3;
+}
+
+table {
+  width: 100%;
+  tr {
+    width: 100%;
+    height: 54px;
+    th {
+      color: #3e3e3e;
+    }
+    td {
+      vertical-align: middle;
+      text-align: center;
+      color: #939393;
+    }
+    th:first-child, td:first-child {
+      width: 6%;
+    }
+  }
+}
+
+button {
+  background-color: transparent;
+  cursor: pointer;
+  img: {
+    cursor: pointer;
+  }
+}

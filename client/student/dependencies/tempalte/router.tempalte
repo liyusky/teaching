@@ -1,0 +1,8 @@
+import Vue from 'vue'
+import Router from 'vue-router'
+
+Vue.use(Router)
+SITE_DEPENDENCE_CONTENT
+export default new Router({
+  routes: SITE_ROUTERS_CONTENT
+})

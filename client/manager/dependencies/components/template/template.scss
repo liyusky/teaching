@@ -1,0 +1,116 @@
+// include module
+@import '../../sass/_flex.scss';
+@import '../../sass/_unit.scss';
+// current sass
+.template {
+  @include horizontal_left();
+  width: 100vw;
+  height: 100vh;
+  &-menu {
+    @include vertical_direction();
+    width: 150px;
+    min-width: 150px;
+    height: 100%;
+    background-color: #2d3939;
+    -moz-user-select:none;
+    -webkit-user-select:none;
+    -ms-user-select:none;
+    -khtml-user-select:none;
+    user-select:none;
+
+    .menu-logo {
+      width: 100%;
+      height: 71px;
+
+      border: {
+        bottom: 1px solid #242e2d;
+      }
+      img {
+        width: 100%;
+        height: 61px;
+        margin: {
+          top: 5px;
+        }
+      }
+    }
+
+    .menu-list {
+      width: 100%;
+      flex-grow: 1;
+
+      .list-item {
+        @include center();
+        width: 100%;
+        height: 45px;
+        font-size: 16px;
+        color: #fff;
+
+        .item-icon {
+          margin: {
+            right: 6px;
+          }
+        }
+      }
+      .selected {
+        background-color: #242e2d;
+        color: #2dada0;
+      }
+
+      .list-item:hover {
+        background-color: #242e2d;
+        color: #2dada0;
+      }
+    }
+  }
+
+  &-content {
+    @include vertical_direction();
+    flex-grow: 1;
+    height: 100vh;
+    padding: {
+      bottom: 20px;
+    }
+    .content-title {
+      position: relative;
+      @include horizontal_end();
+      width: 100%;
+      height: 70px;
+      min-height: 70px;
+      padding: {
+        right: 20px;
+      }
+      font-size: 18px;
+      .title-tip {
+        @include vertical_center_horizontal_between();
+        height: 70px;
+        padding: {
+          left: 15px;
+          right: 15px;
+        }
+      }
+
+      .title-option-list {
+        position: absolute;
+        bottom: -90px;
+        right: 40px;
+        z-index: 800;
+        width: 180px;
+        height: 102px;
+        border: 1px solid #ccc;
+        border-radius: 3px;
+        background-color: #fff;
+
+        .list-item {
+          @include vertical_center();
+          width: 100%;
+          height: 50px;
+
+          padding: {
+            left: 15px;
+            right: 15px;
+          }
+        }
+      }
+    }
+  }
+}

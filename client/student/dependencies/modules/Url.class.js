@@ -1,0 +1,25 @@
+export default class Url {
+  static GetToken = '/auth/token'
+  static SMSCaptcha = '/common/send-sms'
+  static LoginByPassword = '/auth/login-by-password'
+  static LoginBySMS = '/auth/login-by-sms'
+  static Register = '/auth/register'
+  static ForgetPassword = '/auth/forget-password'
+
+  static CourseList = '/student/course-list'
+  static LessonList = '/student/lesson-list'
+  static HomeworkScoreList = '/student/question-score-list'
+  static ExampleScoreList = '/student/example-score-list'
+  static SourceCode = '/common/score-code'
+  static CommentSingle = '/common/comment-single'
+
+  static UpdateAccount = '/common/update-account'
+  // static SchoolList = '/common/school-list'
+  static GameUrl = '/common/game-url'
+  static GameStageList = '/common/game-stage-list'
+  static GameStageScore = '/common/game-stage-score'
+  static GameStageRecord = '/common/game-stage-record'
+  static Logout = '/auth/logout'
+  static GameStageIsFinished = '/common/game-is-finish'
+  static GameStageIsUnlock = '/common/game-is-unlock'
+}

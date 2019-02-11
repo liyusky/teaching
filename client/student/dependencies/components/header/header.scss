@@ -1,0 +1,78 @@
+// include module
+@import '../../sass/_flex.scss';
+@import '../../sass/_unit.scss';
+// current sass
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  @include vertical_center_horizontal_between();
+  width: 100%;
+  height: 60px;
+  padding: {
+    left: 30px;
+    right: 30px;
+  }
+  background-color: #383838;
+  .header-logo {
+    width: 207px;
+    height: 42px;
+  }
+
+  .header-account {
+    position: relative;
+    @include vertical_center_horizontal_around();
+    width: 180px;
+    height: 100%;
+
+    .account-type {
+      font-size: 20px;
+    }
+    .account-option-list {
+      position: absolute;
+      bottom: -90px;
+      right: 40px;
+      z-index: 800;
+      width: 180px;
+      height: 102px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+      background-color: #fff;
+
+      .list-item {
+        @include vertical_center();
+        width: 100%;
+        height: 50px;
+
+        padding: {
+          left: 15px;
+          right: 15px;
+        }
+      }
+    }
+  }
+  .header-option-list {
+    position: absolute;
+    bottom: -90px;
+    right: 40px;
+    z-index: 800;
+    width: 180px;
+    height: 102px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    background-color: #fff;
+
+    .list-item {
+      @include vertical_center();
+      width: 100%;
+      height: 50px;
+
+      padding: {
+        left: 15px;
+        right: 15px;
+      }
+    }
+  }
+}

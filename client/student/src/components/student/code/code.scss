@@ -1,0 +1,77 @@
+// include module
+@import '../../../../dependencies/sass/_flex.scss';
+@import '../../../../dependencies/sass/_unit.scss';
+// current sass
+.commit-record {
+  width: 100%;
+  .record-code {
+    width: 100%;
+    padding: {
+      left: 80px;
+      right: 80px;
+    }
+    .code-title {
+      width: 100%;
+      height: 80px;
+      font-size: 28px;
+      line-height: 80px;
+    }
+    .code-content {
+      width: 100%;
+      border-radius: 5px;
+      border: 1px solid #3e3e3e;
+      padding: {
+        left: 40px;
+      }
+    }
+  }
+
+  .record-result {
+    width: 100%;
+    padding: {
+      left: 80px;
+      right: 80px;
+    }
+    .result-title {
+      width: 100%;
+      height: 80px;
+      font-size: 28px;
+      line-height: 80px;
+    }
+    .result-content {
+      width: 100%;
+      height: 150px;
+      resize: none;
+      border-radius: 5px;
+      border: 1px solid #3e3e3e;
+      padding: 10px;
+    }
+  }
+
+  .record-output {
+    width: 100%;
+    padding: {
+      left: 80px;
+      right: 80px;
+    }
+    .output-title {
+      width: 100%;
+      height: 80px;
+      font-size: 28px;
+      line-height: 80px;
+    }
+    .output-content {
+      width: 100%;
+      height: 150px;
+      resize: none;
+      border-radius: 5px;
+      border: 1px solid #3e3e3e;
+      padding: 10px;
+    }
+  }
+}
+
+.hljs ul li::before {
+  content: counter();
+  display: block;
+}

@@ -1,0 +1,142 @@
+// include module
+@import '../../../../../dependencies/sass/_flex.scss';
+@import '../../../../../dependencies/sass/_unit.scss';
+// current sass
+.detail {
+  @include vertical_direction();
+  width: 100%;
+  height: 100vh;
+  .detail-header {
+    @include horizontal_between();
+    width: 100%;
+    height: 100px;
+    padding: {
+      top: 30px;
+      bottom: 20px;
+    }
+    .header-title {
+      @include vertical_center_horizontal_between();
+      width: 360px;
+      height: 50px;
+      padding: {
+        left: 15px;
+      }
+      .title-introduction {
+        @include vertical_direction_between();
+        width: 170px;
+        height: 100%;
+        .introduction-name {
+          font-size: 18px;
+        }
+        .introduction-tip {
+          font-size: 15px;
+        }
+      }
+      .title-adviser {
+        @include horizontal_left();
+        width: 150px;
+        height: 100%;
+        padding: {
+          top: 5px;
+          bottom: 5px;
+        }
+        .adviser-portrait {
+          width: 40px;
+          height: 40px;
+        }
+        .adviser-introduce {
+          @include vertical_direction_around();
+          width: 90px;
+          height: 100%;
+          padding: {
+            left: 10px;
+          }
+          .introduce-name {
+            font-size: 15px;
+          }
+          .introduce-phone {
+            font-size: 12px;
+          }
+        }
+      }
+    }
+    .header-operation {
+      @include vertical_center_horizontal_between();
+      width: 450px;
+      height: 50px;
+      .operation-btn {
+        height: 40px;
+        padding: {
+          left: 15px;
+          right: 15px;
+        }
+        font-size: 15px;
+        background-color: #6c72fe;
+        border-radius: 3px;
+        color: #fff;
+      }
+    }
+  }
+  .detail-nav {
+    @include horizontal_left();
+    width: 100%;
+    height: 40px;
+    .nav-item {
+      position: relative;
+      @include center();
+      width: 100px;
+      height: 40px;
+      font-size: 14px;
+    }
+    .selected {
+      color: #23bbba !important;
+    }
+    .selected::after {
+      content: '';
+      position: absolute;
+      bottom: -3px;
+      width: 100%;
+      height: 3px;
+      background-color: #23bbba;
+    }
+  }
+  .detail-operation {
+    @include vertical_center_horizontal_between();
+    width: 100%;
+    height: 65px;
+    padding: {
+      top: 15px;
+      bottom: 15px;
+      left: 25px;
+    }
+    .operation-add {
+      width: 110px;
+      height: 35px;
+      font-size: 16px;
+      border-radius: 5px;
+      background-color: #6c72fe;
+      color: #fff;
+    }
+    .operation-choose-week {
+      @include vertical_center_horizontal_between();
+      width: 200px;
+      height: 30px;
+      font-size: 14px;
+      .week-before, .week-affter {
+        width: 60px;
+        height: 30px;
+        color: #000;
+        background-color: #fff;
+        border: 1px solid #dcdcdc;
+        border-radius: 5px;
+      }
+      .week-current {
+        width: 60px;
+        height: 30px;
+        color: #fff;
+        background-color: #23bbba;
+        border-radius: 5px;
+      }
+    }
+  }
+}

@@ -1,0 +1,28 @@
+<template>
+  <!-- s SITE_NOTE -->
+  <section class="SITE_CLASS"></section>
+  <!-- e SITE_NOTE -->
+</template>
+
+<script>
+// include dependence
+SITE_DEPENDENCE
+export default {
+  name: 'SITE_NAME',
+  data () {
+    return {
+      // start datas
+      SITE_DATE
+      // end datas
+    }
+  },
+  components: {,
+    SITE_CHUNK
+    // include chunk
+  }
+}
+</script>
+
+<style lang="sass" scoped>
+@import "SITE_SASS";
+</style>

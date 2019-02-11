@@ -1,0 +1,114 @@
+// include module
+@import '../../../../../dependencies/sass/_flex.scss';
+@import '../../../../../dependencies/sass/_unit.scss';
+// current sass
+.table {
+  position: relative;
+  @include vertical_direction();
+  flex-grow: 1;
+  width: 100%;
+  min-width: 1100px;
+  padding: {
+    left: 20px;
+    right: 20px;
+  }
+  th, td {
+    text-align: center;
+  }
+
+  .table-header {
+    width: 100%;
+    height: 45px;
+    background-color: #e7e7e7;
+    color: #9e9e9e;
+    font-size: 14px;
+    th {
+      position: relative;
+      height: 45px;
+      .arrow-left {
+        position: absolute;
+        left: 10px;
+        top: 12px;
+        z-index: 20;
+        border: {
+          top: 12px solid transparent;
+          right: 10px solid green;
+          bottom: 12px solid transparent;
+        }
+      }
+      .arrow-right {
+        position: absolute;
+        right: 10px;
+        top: 12px;
+        z-index: 20;
+        border: {
+          top: 12px solid transparent;
+          left: 10px solid green;
+          bottom: 12px solid transparent;
+        }
+      }
+    }
+  }
+  .table-content {
+    @include vertical_direction();
+    width: 100%;
+    flex-grow: 1;
+    overflow-y: scroll;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none;
+    table {
+      height: auto;
+      tr {
+        width: 100%;
+        height: 54px;
+        background-color: #e7e7e7;
+        td {
+          height: 54px;
+          .content-show-detail {
+            width: 50px;
+            height: 30px;
+            background-color: #23bcbb;
+            color: #fff;
+            border-radius: 3px;
+          }
+          .content-btn {
+            width: 55px;
+            height: 35px;
+            border-radius: 5px;
+            color: #fff;
+            font-size: 18px;
+          }
+
+          .btn-success {
+            background-color: #137c1a;
+          }
+
+          .btn-warning {
+            background-color: #f7772d;
+          }
+
+          .btn-fail {
+            background-color: #f42424;
+          }
+          .iconfont {
+            color: #137c1a;
+          }
+        }
+      }
+    }
+  }
+  .table-content::-webkit-scrollbar {
+    width: 0 !important
+  }
+  .table-content-disable {
+    background-color: #9e9e9e !important;
+
+    .content-show-detail {
+      background-color: #585555 !important;
+    }
+
+    .iconfont {
+      color: #d53333 !important;
+    }
+  }
+}

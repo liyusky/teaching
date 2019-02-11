@@ -1,0 +1,44 @@
+// include module
+@import '../../../../../../dependencies/sass/_flex.scss';
+@import '../../../../../../dependencies/sass/_unit.scss';
+// current sass
+.delete-class {
+  @include vertical_direction_around();
+  width: 240px;
+  height: 100px;
+  padding: {
+    top: 10px;
+    bottom: 10px;
+  }
+  font-size: 14px;
+  color: #fff;
+  border-radius: 5px;
+  background-color: #fff;
+
+  .class-title {
+    width: 100%;
+    height: 35px;
+  }
+
+  .class-operation {
+    @include vertical_direction_around();
+    width: 100%;
+    height: 25px;
+    padding: {
+      left: 45px;
+      right: 45px;
+    }
+    .operation-confirm .operation-cancel {
+      width: 60px;
+      height: 25px;
+      border-radius: 3px;
+    }
+    .operation-confirm {
+      background-color: #23bbba;
+    }
+    .operation-cancel {
+      background-color: #fff;
+      color: #000;
+    }
+  }
+}

@@ -1,0 +1,32 @@
+.hljs {
+  border: 0;
+  display: block;
+  padding-left: 60px;
+  margin: 0;
+  width: 100%;
+  white-space: pre-wrap;
+  counter-reset: sign;
+}
+
+.hljs ul li {
+  position: relative;
+  border-left: 1px solid #ccc !important;
+  white-space: pre-wrap;
+  padding-left: 15px !important;
+  height: 30px;
+  line-height: 30px;
+  letter-spacing: 0.15em;
+}
+
+.hljs ul li::before {
+  position: absolute;
+  content: counter(sign);
+  counter-increment:sign;
+  font-size: 18px;
+  left: -45px;
+  color: #fff;
+  line-height: 30px;
+}
+.hljs ul li span {
+  letter-spacing: 0.03em;
+}
