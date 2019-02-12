@@ -57,11 +57,9 @@ export default {
       Router.push(`student-stage`)
     },
     gotoPage (item) {
-      let url = `${gameUrl}?`
+      let url = `${window.gameUrl}?`
       url += `gcid=${item.gcid}&`
-      url += `uid=${Account.uid}&`
       url += `token=${Account.token}&`
-      url += `sid=${Account.upid}&`
       url += `student=${Account.uid}`
       window.open(url, 'game')
     },

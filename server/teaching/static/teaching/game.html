@@ -9,20 +9,15 @@
 </head>
 <body>
   <script>
-    alert(1)
+    var gameUrl = 'http://192.168.1.6:8090/game.html'
     window.onload = function () {
       var params = GetRequest()
-      var account = {}
-      try {
-        account = JSON.parse(localStorage.getItem('account'))
-      } catch (error) {
-        alert('请提高您的浏览器版本')
-      }
       var datas = new URLSearchParams()
       datas.append('student', params.student)
       datas.append('gcid', params.gcid)
       axios({
-        url: '/teaching/common/game-url',
+        // url: '/teaching/common/game-url',
+        url: 'http://192.168.1.6:8080/teaching/common/game-url',
         method: 'post',
         withCredentials: true,
         headers: {
@@ -34,11 +29,19 @@
         console.log(response.data)
         location.href = response.data.data;
       }).catch(error => {
-        alert('跳转游戏失败')
         if (error.response) {
           if (error.response.status === 401) {
-            location.href = './student.html';
+            alert('认证失败，请重新认证')
+            // location.href = './student.html';
+            var nextUrl = 'http://192.168.1.6:8082/#/?';
+            nextUrl += 'next=' + gameUrl + '&';
+            nextUrl += 'student=' + params.student + '&';
+            nextUrl += 'gcid=' + params.gcid;
+            location.href = nextUrl;
           }
+        }
+        else {
+          alert('跳转游戏失败')
         }
       })
     }
@@ -49,8 +52,8 @@
       var theRequest = new Object();
       if (url.indexOf("?") != -1) {
         var str = url.substr(1);
-        strs = str.split("&");
-        for(var i = 0; i < strs.length; i ++) {
+        var strs = str.split("&");
+        for(var i = 0; i < strs.length; i++) {
           theRequest[strs[i].split("=")[0]]=unescape(strs[i].split("=")[1]);
         }
       }

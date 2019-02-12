@@ -203,6 +203,13 @@ export default class Check {
     return true
   }
 
+  static id (id) {
+    id = id ? id.replace(/\s+/g, '') : id
+    id *= 1
+    if (isNaN(id)) return false
+    return true
+  }
+
   static phone (phone) {
     phone = phone ? phone.replace(/\s+/g, '') : phone
     if (!phone) {

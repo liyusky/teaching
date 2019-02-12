@@ -59,6 +59,7 @@ export default {
         }
       }).success(data => {
         this.homeworkPanel = this.formatData(data)
+        this.max = data.length
       }).fail(data => {
       })
     },

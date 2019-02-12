@@ -82,28 +82,30 @@ def isChapterUnlocked(user, chapter_id):
 
 
 def isChapterFinished(user, chapter_id):
-    setting = getMySetting(user)
-    chapters = Chapter.objects.filter(id=chapter_id)
-    if not chapters.exists():
-        return False
-    chapter = chapters[0]
-    c_stages = chapter.stages.filter(enable=True).order_by('-idx')
-    if not c_stages.exists():
-        return False
-    last_stage = c_stages[0]
-    statistics = UserStagesStatistic.objects.fiter(user=user, stage=last_stage, lang=setting.lang)
-    if not statistics.exists():
-        return False
-    statistic = statistics[0]
-    if statistic.high_score >= 100:
-        return True
-    return False
+    # setting = getMySetting(user)
+    # chapters = Chapter.objects.filter(id=chapter_id)
+    # if not chapters.exists():
+    #     return False
+    # chapter = chapters[0]
+    # c_stages = chapter.stages.filter(enable=True).order_by('-idx')
+    # if not c_stages.exists():
+    #     return False
+    # last_stage = c_stages[0]
+    # statistics = UserStagesStatistic.objects.fiter(user=user, stage=last_stage, lang=setting.lang)
+    # if not statistics.exists():
+    #     return False
+    # statistic = statistics[0]
+    # if statistic.high_score >= 100:
+    #     return True
+    # return False
+    return True
 
 
 def accessChapter(user, chapter_id):
     #login_init(user)
-    jump2ChapterLastStage(user, chapter_id)
-    return reverse('kudingmao:stage', args=())
+    # jump2ChapterLastStage(user, chapter_id)
+    # return reverse('kudingmao:stage', args=())
+    return 'https://www.bilibili.com'
 
 
 def jump2ChapterLastStage(user, chapter_id):

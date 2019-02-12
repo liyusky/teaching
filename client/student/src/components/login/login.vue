@@ -16,14 +16,14 @@
         </li>
         <li class="list-item border-1">
           <input class="item-input" v-model="imageCode" type="text" maxlength="4" placeholder="请输入图形验证码" @keyup.enter="submit">
-          <img class="item-image" :src="codeImage" @click="getCodeImage">
+          <img class="item-image" :src="codeImage" @click="getCodeImage" @error="getCodeImage">
         </li>
         <li class="list-item border-1" v-show="smsMode || status != 'login'">
           <input class="item-input" v-model="smsCode" type="text" maxlength="6" placeholder="请输入短信验证码" @keyup.enter="submit">
           <button class="item-btn" :disabled='smsDisabled' @click="sendSMSCaptcha">{{sendSMSBtnText}}</button>
         </li>
       </ul>
-      <div class="area-operation">
+      <div class="area-operation" v-show="notAuthMode">
         <button class="operation-btn btn-left" @click="switchStatus(true)">
           <div>{{leftBtn}}</div>
         </button>
@@ -71,6 +71,8 @@ export default {
       smsDisabled: false,
       submitDisabled: false,
       sendSMSBtnText: '获取短信验证码',
+      urlParams: {},
+      notAuthMode: true,
       // start datas
       imageBg: '../../../static/images/bg.jpg'
       // end datas
@@ -83,11 +85,14 @@ export default {
   },
   created () {
     this.clearStorage()
+    this.setAuthInit()
+  },
+  mounted () {
     this.getCodeImage()
   },
   methods: {
     getCodeImage () {
-      this.codeImage = `${window.baseUrl}/common/image-code?time=${new Date()}`
+      this.codeImage = `${window.baseUrl}/common/image-code?time=${new Date() + Math.random()}`
     },
     switchStatus (state) {
       switch (this.status) {
@@ -185,9 +190,21 @@ export default {
         }
       }).success(data => {
         Account.info = data
-        Router.push('student')
+        if (this.notAuthMode) {
+          Router.push('student')
+          if (!data.name) Display.panel = 'user-update-user'
+        } else {
+          if (Account.uid * 1 !== this.urlParams.student * 1) {
+            alert('请使用属于您的账户登录')
+            return
+          }
+          let url = `${window.gameUrl}?`
+          url += `gcid=${this.urlParams.gcid}&`
+          url += `token=${Account.token}&`
+          url += `student=${this.urlParams.student}`
+          window.open(url, 'game')
+        }
         // if (!data.name || !data.school) Display.panel = 'user-update-user'
-        if (!data.name) Display.panel = 'user-update-user'
       }).fail(data => {
       }).default(() => {
         this.getCodeImage()
@@ -206,11 +223,20 @@ export default {
         }
       }).success(data => {
         Account.info = data
-        Router.push('student')
-        // if (!data.name || !data.school) {
-        //   Display.panel = 'user-update-user'
-        // }
-        if (!data.name) Display.panel = 'user-update-user'
+        if (this.notAuthMode) {
+          Router.push('student')
+          if (!data.name) Display.panel = 'user-update-user'
+        } else {
+          if (Account.uid * 1 !== this.urlParams.student * 1) {
+            alert('请使用属于您的账户登录')
+            return
+          }
+          let url = `${window.gameUrl}?`
+          url += `gcid=${this.urlParams.gcid}&`
+          url += `token=${Account.token}&`
+          url += `student=${this.urlParams.student}`
+          window.open(url, 'game')
+        }
       }).fail(data => {
         console.log(data)
       }).default(() => {
@@ -282,6 +308,28 @@ export default {
       this.$store.commit('content', false)
       this.$store.commit('communication', {})
       localStorage.clear()
+    },
+    setAuthInit () {
+      let params = this.getRequestParams()
+      if (!('next' in params)) return
+      if (!('student' in params)) return
+      if (!('gcid' in params)) return
+      if (!Check.id(params.student)) return
+      if (!Check.id(params.gcid)) return
+      this.urlParams = params
+      this.notAuthMode = false
+    },
+    getRequestParams () {
+      let url = window.location.href
+      let theRequest = {}
+      if (url.indexOf('?') !== -1) {
+        let str = url.split('?')[1]
+        let strs = str.split('&')
+        for (var i = 0; i < strs.length; i++) {
+          theRequest[strs[i].split('=')[0]] = unescape(strs[i].split('=')[1])
+        }
+      }
+      return theRequest
     }
   }
 }
