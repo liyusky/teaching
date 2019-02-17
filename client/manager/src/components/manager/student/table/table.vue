@@ -22,7 +22,7 @@
             <button class="content-show-detail" :disabled="!item.enable" @click="updateStudent(item)">修改</button>
           </td>
           <td class="table-70">{{index + 1}}</td>
-          <td class="table-110">{{item.name || '未实名'}}</td>
+          <td class="table-110">{{item.detail.realname || '未实名'}}</td>
           <td class="table-130">{{item.phone}}</td>
           <!-- <td class="table-150">{{getCollege(item.detail)}}</td> -->
           <td class="table-100">{{grade[item.grade]}}</td>
@@ -78,9 +78,6 @@ export default {
         data: data
       }).success(data => {
         this.table = data
-        if (data.length === 0) {
-          alert('暂无数据')
-        }
       }).fail(data => {
       }).default(() => {
         Display.api = false

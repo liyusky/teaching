@@ -1,4 +1,4 @@
-export default class Url {
+export default class MangerUrl {
   static SMSCaptcha = '/common/send-sms'
   static LoginByPassword = '/auth/login-by-password'
   static LoginBySMS = '/auth/login-by-sms'

@@ -130,7 +130,7 @@ export default {
   watch: {
     '$store.state.modal' (modal, previous) {
       if (previous === 'teacher-select' && modal === false && Communication.modal) {
-        this.manager = `${Communication.modal.name}（${Communication.modal.phone}）`
+        this.manager = `${Communication.modal.detail.realname}（${Communication.modal.phone}）`
         this.teacher = {...Communication.modal}.user
       }
       // if (previous === 'school-select' && modal === false && Communication.modal) {

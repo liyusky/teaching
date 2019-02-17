@@ -15,7 +15,7 @@
     <div class="template-content">
       <div class="content-title">
         <div class="title-tip" @click="showNav">
-          <span>{{account.name ? account.name : '未实名' }}</span>
+          <span>{{account.name || '未实名'}}</span>
           <i class="iconfont icon-arrow-down color-light-black"></i>
         </div>
         <ul class="title-option-list" v-show="nav">
@@ -137,6 +137,11 @@ export default {
       this.$store.commit('communication', {})
       this.$store.commit('menu', '')
       localStorage.clear()
+    }
+  },
+  watch: {
+    '$store.state.account' (account) {
+      this.account = account
     }
   }
 }

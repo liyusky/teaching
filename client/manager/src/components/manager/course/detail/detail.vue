@@ -9,7 +9,7 @@
         </p>
         <p class="title-tip">创建人：{{creater.name}}（{{creater.phone}}）, 共{{count}}课时，120分钟/课时</p>
       </div>
-      <div class="header-operation">
+      <div class="header-operation" v-if="setPermission()">
         <button class="operation-btn" @click="addLesson">新增课时</button>
         <!-- <button class="operation-btn">编辑</button>
         <button class="operation-btn">删除</button> -->
@@ -26,6 +26,7 @@ import LessonTableComponent from '../table/lesson/lesson.vue'
 import Communication from '../../../../../dependencies/modules/Communication.class.js'
 import Display from '../../../../../dependencies/modules/Display.class.js'
 import Http from '../../../../../dependencies/modules/Http.class.js'
+import Account from '../../../../../dependencies/modules/Account.class.js'
 
 export default {
   name: 'CourseDetailComponent',
@@ -51,6 +52,11 @@ export default {
     this.getLessonList()
   },
   methods: {
+    setPermission () {
+      let show = true
+      if (Account.role < 99) show = false
+      return show
+    },
     addLesson () {
       Display.panel = 'lesson-add-lesson'
       Communication.panel = Communication.detail

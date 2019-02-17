@@ -27,7 +27,7 @@ SECRET_KEY = 'j3+jnxv8l3y7@2egg7dx-qen$2xcym*b*4h&%7_d%l-=oc(70h'
 DEBUG = True
 #COMPRESS_ENABLED = True
 
-ALLOWED_HOSTS = ['192.168.1.6']
+ALLOWED_HOSTS = ['192.168.1.6', '192.168.43.237']
 
 
 # Application definition

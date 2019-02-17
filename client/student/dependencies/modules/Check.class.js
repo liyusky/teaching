@@ -135,6 +135,21 @@ export default class Check {
     return true
   }
 
+  static shortAccount (account) {
+    account = account ? account.replace(/\s+/g, '') : account
+    if (!account) {
+      this.show('请输入账户')
+      return false
+    }
+
+    let pat = new RegExp(/[A-Za-z0-9_·@\-]{1,50}/)
+    if (!pat.test(account)) {
+      this.show('账户格式错误')
+      return false
+    }
+    return true
+  }
+
   static appellation (appellation) {
     appellation = appellation ? appellation.replace(/\s+/g, '') : appellation
     if (!appellation) {

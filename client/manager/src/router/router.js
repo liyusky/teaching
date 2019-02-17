@@ -7,7 +7,6 @@ const ManagerComponent = () => import(/* webpackChunkName: 'manager' */ '../comp
 const ClassComponent = () => import(/* webpackChunkName: 'manager-class' */ '../components/manager/class/class.vue')
 const CourseComponent = () => import(/* webpackChunkName: 'manager-course' */ '../components/manager/course/course.vue')
 const CurriculumComponent = () => import(/* webpackChunkName: 'manager-curriculum' */ '../components/manager/curriculum/curriculum.vue')
-const ExaminationComponent = () => import(/* webpackChunkName: 'manager-examination' */ '../components/manager/examination/examination.vue')
 const HomeworkComponent = () => import(/* webpackChunkName: 'manager-homework' */ '../components/manager/homework/homework.vue')
 const LessonScoreComponent = () => import(/* webpackChunkName: 'manager-lesson-score' */ '../components/manager/lesson-score/lesson-score.vue')
 // const SchoolComponent = () => import(/* webpackChunkName: 'manager-school' */ '../components/manager/school/school.vue')
@@ -42,11 +41,6 @@ export default new Router({
           path: '/manager/curriculum',
           name: 'manager-curriculum',
           component: CurriculumComponent
-        },
-        {
-          path: '/manager/examination',
-          name: 'manager-examination',
-          component: ExaminationComponent
         },
         {
           path: '/manager/homework',

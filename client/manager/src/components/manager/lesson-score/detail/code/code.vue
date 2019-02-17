@@ -98,9 +98,12 @@ export default {
         this.result = data.result || ''
         this.output = data.output || ''
         let codeDom = document.getElementById('code')
-        codeDom.innerText = data.code || ''
-        window.hljs.highlightBlock(codeDom)
         let $ = window.$
+        $('code').text(data.code || '')
+        window.hljs.configure({
+          languages: 'cpp'
+        })
+        window.hljs.highlightBlock(codeDom)
         $.each($('code'), (index, item) => {
           $(item).html(`<ul class="content"><li>${$(item).html().replace(/\n/g, '\n</li><li>')}\n</li></ul>`)
         })

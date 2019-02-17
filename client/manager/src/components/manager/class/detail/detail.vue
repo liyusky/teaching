@@ -27,13 +27,13 @@
       <div class="nav-item" :class="{'selected': current == 'plan'}" @click="selectTable('plan')">课程列表</div>
       <div class="nav-item" :class="{'selected': current == 'enroll'}" @click="selectTable('enroll')">班级学员</div>
     </nav>
-    <div class="detail-operation" v-show="current == 'plan'">
+    <div class="detail-operation" v-show="current == 'plan'" v-if="setPermission()">
       <button class="operation-add" @click="addPlan">
         <i></i>
         <span>添加课程</span>
       </button>
     </div>
-    <div class="detail-operation" v-show="current == 'enroll'">
+    <div class="detail-operation" v-show="current == 'enroll'" v-if="setPermission()">
       <button class="operation-add" @click="addEnroll">
         <i></i>
         <span>添加学员</span>
@@ -52,6 +52,7 @@ import EnrollTableComponent from '../table/enroll/enroll.vue'
 import Communication from '../../../../../dependencies/modules/Communication.class.js'
 import Display from '../../../../../dependencies/modules/Display.class.js'
 import Http from '../../../../../dependencies/modules/Http.class.js'
+import Account from '../../../../../dependencies/modules/Account.class.js'
 
 export default {
   name: 'ClassDetailComponent',
@@ -78,6 +79,11 @@ export default {
     this.getEnrollList()
   },
   methods: {
+    setPermission () {
+      let show = true
+      if (Account.role < 99) show = false
+      return show
+    },
     addPlan () {
       Display.panel = 'plan-add-plan'
       Communication.panel = this.detail

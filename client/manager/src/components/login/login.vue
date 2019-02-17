@@ -18,7 +18,7 @@
         </li>
         <li class="list-item border-1">
           <input class="item-input" v-model="imageCode" type="text" maxlength="4" placeholder="请输入图形验证码" @keyup.enter="submit" @keyup.ctrl.enter="sendSMSCaptcha">
-          <img class="item-image" :src="codeImage" @click="getCodeImage">
+          <img class="item-image" :src="codeImage" @click="getCodeImage" @error="getErrorCodeImage">
         </li>
         <li class="list-item border-1" v-show="mode">
           <input class="item-input" v-model="smsCode" type="text" maxlength="6" placeholder="请输入短信验证码" @keyup.enter="submit" @keyup.ctrl.enter="sendSMSCaptcha">
@@ -58,7 +58,10 @@ export default {
       sendSMSBtnText: '获取验证码',
       codeImage: `${Dictionary.baseUrl}/common/image-code?time=${new Date()}`,
       submitDisabled: false,
-      smsDisabled: false
+      smsDisabled: false,
+      errorRequestMark: 3,
+      notAuthMode: true,
+      urlParams: {}
       // start datas
       // end datas
     }
@@ -69,6 +72,7 @@ export default {
   created () {
     this.clearStorage()
     this.getCodeImage()
+    this.setAuthInit()
   },
   mounted () {
     this.getCodeImage()
@@ -83,7 +87,7 @@ export default {
       this.getCodeImage()
     },
     loginByPassword () {
-      if (!Check.account(this.phone)) return
+      if (!Check.shortAccount(this.phone)) return
       if (!Check.password(this.password)) return
       if (!Check.imageCode(this.imageCode)) return
       this.submitDisabled = true
@@ -96,17 +100,7 @@ export default {
         }
       }).success(data => {
         Account.info = data
-        if (Account.role) {
-          Router.push('manager-class')
-          // if (!data.name || !data.phone) {
-          //   Display.panel = 'user-update-user'
-          // }
-          if (!data.name) {
-            Display.panel = 'user-update-user'
-          }
-        } else {
-          alert('您不是教师，无法登陆')
-        }
+        this.loginSuccess()
       }).fail(data => {
       }).default(() => {
         this.submitDisabled = false
@@ -124,17 +118,7 @@ export default {
         }
       }).success(data => {
         Account.info = data
-        if (Account.role) {
-          Router.push('manager-class')
-          // if (!data.name || !data.school) {
-          //   Display.panel = 'user-update-user'
-          // }
-          if (!data.name) {
-            Display.panel = 'user-update-user'
-          }
-        } else {
-          alert('您不是教师，无法登陆')
-        }
+        this.loginSuccess()
       }).fail(data => {
         console.log(data)
       }).default(() => {
@@ -143,6 +127,42 @@ export default {
     },
     getCodeImage () {
       this.codeImage = `${window.baseUrl}/common/image-code?time=${new Date()}`
+      this.errorRequestMark = 3
+    },
+    getErrorCodeImage () {
+      if (this.errorRequestMark > 0) {
+        this.codeImage = `${window.baseUrl}/common/image-code?time=${new Date() + Math.random()}`
+      }
+      this.errorRequestMark--
+    },
+    loginSuccess () {
+      if (this.notAuthMode) {
+        Router.push('manager-class')
+        if (!Account.role) {
+          alert('您不是教师，无法登陆')
+        }
+        if (!Account.name) Display.panel = 'user-update-user'
+      } else {
+        if (Account.uid * 1 !== this.urlParams.user * 1) {
+          alert('请使用属于您的账户登录')
+          return
+        }
+        switch (this.urlParams.type * 1) {
+          case 1:
+            // Router.transformNewStorage()
+            Router.push(this.urlParams.next)
+            break
+          case 2:
+            let url = `${window.gameUrl}?`
+            url += `gcid=${this.urlParams.gcid}&`
+            url += `token=${Account.token}&`
+            url += `origin=teacher&`
+            url += `user=${this.urlParams.user}$`
+            url += `time=${(new Date()).getTime()}`
+            window.open(url, 'game')
+            break
+        }
+      }
     },
     sendSMSCaptcha () {
       if (!Check.phone(this.phone)) return
@@ -177,6 +197,27 @@ export default {
         }
       }, 1000)
     },
+    setAuthInit () {
+      let params = this.getRequestParams()
+      if (!('next' in params)) return
+      if (!('type' in params)) return
+      if (!('user' in params)) return
+      if (!Check.id(params.type)) return
+      if (!Check.id(params.user)) return
+      switch (params.type * 1) {
+        case 1:
+          this.notAuthMode = false
+          this.urlParams = params
+          break
+        case 2:
+          if (!('user' in params)) return
+          if (!('gcid' in params)) return
+          if (!Check.id(params.user)) return
+          this.notAuthMode = false
+          this.urlParams = params
+          break
+      }
+    },
     clearStorage () {
       this.$store.commit('account', {})
       this.$store.commit('origin', null)
@@ -189,6 +230,18 @@ export default {
       this.$store.commit('communication', {})
       this.$store.commit('menu', '')
       localStorage.clear()
+    },
+    getRequestParams () {
+      let url = window.location.href
+      let theRequest = {}
+      if (url.indexOf('?') !== -1) {
+        let str = url.split('?')[1]
+        let strs = str.split('&')
+        for (var i = 0; i < strs.length; i++) {
+          theRequest[strs[i].split('=')[0]] = unescape(strs[i].split('=')[1])
+        }
+      }
+      return theRequest
     }
   }
 }

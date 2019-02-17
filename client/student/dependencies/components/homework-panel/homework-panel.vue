@@ -60,7 +60,9 @@ export default {
       let url = `${window.gameUrl}?`
       url += `gcid=${item.gcid}&`
       url += `token=${Account.token}&`
-      url += `student=${Account.uid}`
+      url += `user=${Account.uid}&`
+      url += `origin=student&`
+      url += `time=${(new Date()).getTime()}`
       window.open(url, 'game')
     },
     refreshStatus () {

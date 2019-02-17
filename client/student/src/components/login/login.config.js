@@ -19,7 +19,7 @@ module.exports = {
     Display: true,
     Http: true,
     Router: true,
-    Storage: false,
+    Storage: true,
     Time: false,
     Url: false
   },

@@ -2,7 +2,7 @@
   <!-- s 班级管理 -->
   <section class="class">
     <div class="class-nav">
-      <BtnComponent :setting="btn" @BTN_CLICK_EVENT="addClass" class="nav-btn">
+      <BtnComponent :setting="btn" @BTN_CLICK_EVENT="addClass" class="nav-btn" v-if="setPermission()">
         <i></i>
         <span>新添班级</span>
       </BtnComponent>
@@ -48,6 +48,11 @@ export default {
     Account.logout()
   },
   methods: {
+    setPermission () {
+      let show = true
+      if (Account.role < 99) show = false
+      return show
+    },
     addClass () {
       Display.panel = 'class-add-class'
     },

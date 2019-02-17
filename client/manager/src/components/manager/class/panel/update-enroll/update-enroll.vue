@@ -132,7 +132,7 @@ export default {
   watch: {
     '$store.state.modal' (modal, previous) {
       if (previous === 'student-select' && modal === false && Communication.modal) {
-        this.student = `${Communication.modal.name}（${Communication.modal.phone}）`
+        this.student = `${Communication.modal.detail.realname}（${Communication.modal.phone}）`
         this.sid = {...Communication.modal}.user
       } else if (previous === 'course-select' && modal === false && Communication.modal) {
         this.course = `${Communication.modal.name}（${Dictionary.language[Communication.modal.language]}，${Dictionary.rank[Communication.modal.grade]}）`

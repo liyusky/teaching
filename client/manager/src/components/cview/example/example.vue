@@ -15,6 +15,7 @@
           <th class="table-90">章节</th>
           <th class="table-70">顺序</th>
           <th class="table-70">解锁</th>
+          <th class="table-70">内容</th>
           <th class="table-70">编号</th>
         </tr>
       </table>
@@ -27,6 +28,9 @@
             <td class="table-70">{{item.idx}}</td>
             <td class="table-70">
               <button class="content-show-detail" :disabled="!item.enable" @click="refreshStatus(item, index)">{{item.unlock ? '已打开' : '已锁住'}}</button>
+            </td>
+            <td class="table-70">
+              <button class="content-show-detail" :disabled="!item.enable" @click="gotoPage(item)">跳转</button>
             </td>
             <td class="table-70">{{item.leid}}</td>
           </tr>
@@ -42,6 +46,7 @@
 import Communication from '../../../../dependencies/modules/Communication.class.js'
 import Dictionary from '../../../../dependencies/modules/Dictionary.class.js'
 import Display from '../../../../dependencies/modules/Display.class.js'
+import Account from '../../../../dependencies/modules/Account.class.js'
 import Http from '../../../../dependencies/modules/Http.class.js'
 
 export default {
@@ -63,6 +68,15 @@ export default {
       this.table.forEach(item => {
         this.getUnlock(item)
       })
+    },
+    gotoPage (item) {
+      let url = `${window.gameUrl}?`
+      url += `gcid=${item.gcid}&`
+      url += `token=${Account.token}&`
+      url += `user=${Account.uid}&`
+      url += `origin=teacher&`
+      url += `time=${(new Date()).getTime()}`
+      window.open(url, 'game')
     },
     refreshStatus (item, index) {
       Http.send({

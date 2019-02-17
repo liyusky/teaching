@@ -54,7 +54,7 @@ class LessonList(ValidApiView):
         detail = self.readiness(request)
 
         try:
-            lessons = Lesson.objects.filter(course=request.data['cid'])
+            lessons = Lesson.objects.filter(course=request.data['cid'], enable=1)
             serializer = LessonSerializer(lessons, many=True)
             response.data = serializer.data
         except Exception as e:
@@ -85,44 +85,9 @@ class HomeworkDetailScoreList(ValidApiView):
             question = HomeworkDetail.objects.filter(
                 homework__curriculum__cls=params['oid'],
                 homework__curriculum__lesson=params['lid'],
+                enable=1
             )
             serializer = QuestionSerializer(question, many=True)
-            # for item in question:
-            #     result = {}
-            #     if item.gametype == 0:
-            #         score = MaoScore.objects.filter(stage=item.gsid, user=request.user.id)
-            #         if score.exists():
-            #             score = score.last()
-            #             result = {
-            #                 'index': item.idx,
-            #                 'gcid': item.gcid,
-            #                 'game': 0,
-            #                 'score': score.high_score,
-            #                 'gsid': score.stage.id,
-            #                 'stage': score.stage.name,
-            #                 'doit': True
-            #             }
-            #         else:
-            #             stage = MaoStage.objects.filter(id=item.gsid)
-            #             if stage.exists():
-            #                 stage = stage.last()
-            #                 result = {
-            #                     'index': item.idx,
-            #                     'gcid': item.gcid,
-            #                     'game': 0,
-            #                     'score': 0,
-            #                     'gsid': stage.id,
-            #                     'stage': stage.name,
-            #                     'doit': False,
-            #                 }
-            #     if item.gametype == 1:
-            #         result = {
-            #             'game': 1
-            #         }
-
-            #     if result:
-            #         data.append(result)
-
             response.data = serializer.data
         except Exception as e:
             response.refresh(code=604, description=10533, error=e.__str__())
@@ -148,43 +113,8 @@ class LessonDetailScoreList(ValidApiView):
 
         detail = self.readiness(request)
         try:
-            example = LessonDetail.objects.filter(lesson=params['lid']).order_by('idx')
+            example = LessonDetail.objects.filter(lesson=params['lid'], enable=1).order_by('idx')
             serializer = ExampleSerializer(example, many=True)
-            # for item in example:
-            #     result = {}
-            #     if item.gametype == 0:
-            #         score = MaoScore.objects.filter(stage=item.gsid, user=request.user.id).last()
-            #         if score:
-            #             result = {
-            #                 'game': 0,
-            #                 'gcid': item.gcid,
-            #                 'index': item.idx,
-            #                 'score': score.high_score,
-            #                 'gsid': score.stage.id,
-            #                 'stage': score.stage.name,
-            #                 'doit': True
-            #             }
-            #         else:
-            #             stage = MaoStage.objects.filter(id=item.gsid)
-            #             if stage.exists():
-            #                 stage = stage.last()
-            #                 result = {
-            #                     'game': 0,
-            #                     'gcid': item.gcid,
-            #                     'index': item.idx,
-            #                     'gsid': stage.id,
-            #                     'stage': stage.name,
-            #                     'score': 0,
-            #                     'doit': False
-            #                 }
-
-            #     if item.gametype == 1:
-            #         result = {
-            #             'game': 1
-            #         }
-            #     if result:
-            #         data.append(result)
-
             response.data = serializer.data
         except Exception as e:
             response.refresh(mark=True, code=604, description=10515, error=e.__str__())

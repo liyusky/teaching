@@ -17,6 +17,12 @@
     <div id="modal"></div>
     <div id="tip"></div>
     <!-- built files will be auto injected -->
-    <script>hljs.initHighlightingOnLoad()</script>
+    <script>
+      window.onload = function () {
+        if (!window.localStorage.getItem('account')) window.localStorage.setItem('account', '[]')
+        if (!window.localStorage.getItem('nav')) window.localStorage.setItem('nav', '[]')
+        if (!window.localStorage.getItem('communication')) window.localStorage.setItem('communication', '{}')
+      }
+    </script>
   </body>
 </html>

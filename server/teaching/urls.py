@@ -113,11 +113,48 @@ url_student = [
     url(r'^student/example-score-list$', students.LessonDetailScoreList.as_view()),
 ]
 
+url_teachers = [
+    # 班级
+    url(r'^teacher/class-list$', teachers.ClassList.as_view()),
+    # 方案
+    url(r'^teacher/plan-list$', teachers.PlanList.as_view()),
+    # 报名
+    url(r'^teacher/enroll-list$', teachers.EnrollList.as_view()),
+    # 课程
+    url(r'^teacher/course-list$', teachers.CourseList.as_view()),
+    # 课时
+    url(r'^teacher/lesson-list$', teachers.LessonList.as_view()),
+    # 游戏
+    url(r'^teacher/game-chapter-list$', teachers.GameChapterList.as_view()),
+    # 课程表
+    url(r'^teacher/curriculum-list$', teachers.CurriculumList.as_view()),
+    url(r'^teacher/add-curriculum$', teachers.AddCurriculum.as_view()),
+    url(r'^teacher/update-curriculum$', teachers.UpdateCurriculum.as_view()),
+    # 作业
+    url(r'^teacher/homework-list$', teachers.HomeworkList.as_view()),
+    url(r'^teacher/add-homework$', teachers.AddHomework.as_view()),
+    url(r'^teacher/update-homework$', teachers.UpdateHomework.as_view()),
+    # 问题
+    url(r'^teacher/question-list$', teachers.QuestionList.as_view()),
+    url(r'^teacher/add-question$', teachers.AddQuestion.as_view()),
+    url(r'^teacher/update-question$', teachers.UpdateQuestion.as_view()),
+    # 案例
+    url(r'^teacher/example-list$', teachers.ExampleList.as_view()),
+    # 作业成绩
+    url(r'^teacher/score-list$', teachers.ScoreList.as_view()),
+    # 课时内容题目成绩
+    url(r'^teacher/example-score-list$', teachers.ExampleScoreList.as_view()),
+    # 游戏章节控制
+    url(r'^teacher/open-chapter$', teachers.GameStageOpenChapter.as_view()),
+    url(r'^teacher/game-is-unlock$', teachers.GameStageIsUnlock.as_view()),
+]
+
 url_all.extend(url_auth)
 url_all.extend(url_common)
 url_all.extend(url_manager)
 url_all.extend(url_student)
 url_all.extend(url_root)
+url_all.extend(url_teachers)
 
 
 urlpatterns = url_all

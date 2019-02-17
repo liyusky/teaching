@@ -61,7 +61,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return profile
 
     def update(self, instance, validated_data):
-        print(validated_data)
         if 'phone' in validated_data:
             instance.phone = validated_data.get('phone', instance.phone)
         if 'name' in validated_data:
@@ -86,11 +85,13 @@ class UserProfileSerializer(serializers.ModelSerializer):
         return instance
 
     def get_detail(self, row):
+        user = row.user
         creator = row
         if row.creator > 0:
             creator = UserTeachingProfile.objects.get(user=row.creator)
 
         result = {
+            'realname': user.first_name + user.last_name,
             'creator': {
                 'name': creator.name,
                 'phone': creator.phone
@@ -406,7 +407,7 @@ class CurriculumSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Curriculum
-        fields = ('curid', 'cls', 'lesson', 'lessonDetail', 'classroom', 'launch', 'deadline', 'creator', 'creater', 'task', 'enable')
+        fields = ('curid', 'cls', 'lesson', 'lessonDetail', 'launch', 'deadline', 'creator', 'creater', 'task', 'enable')
 
     def create(self, validated_data):
         validated_data['create_time'] = timezone.now()
@@ -418,8 +419,8 @@ class CurriculumSerializer(serializers.ModelSerializer):
             instance.lesson = validated_data.get('lesson', instance.lesson)
         # if 'school' in validated_data:
         #     instance.school = validated_data.get('school', instance.school)
-        if 'classroom' in validated_data:
-            instance.classroom = validated_data.get('classroom', instance.classroom)
+        # if 'classroom' in validated_data:
+        #     instance.classroom = validated_data.get('classroom', instance.classroom)
         if 'start_time' in validated_data:
             instance.start_time = validated_data.get('start_time', instance.start_time)
         if 'end_time' in validated_data:
@@ -585,7 +586,6 @@ class HomeworkSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         validated_data['create_time'] = timezone.now()
-        description = ''
         homework = Homework.objects.create(**validated_data)
         return homework
 

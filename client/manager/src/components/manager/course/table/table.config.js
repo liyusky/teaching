@@ -12,7 +12,7 @@ module.exports = {
     home: false
   },
   modules: {
-    Account: false,
+    Account: true,
     Check: false,
     Communication: true,
     Dictionary: true,

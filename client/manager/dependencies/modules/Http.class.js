@@ -1,5 +1,6 @@
 import axios from 'axios'
-import Url from './Url.class.js'
+import MangerUrl from './MangerUrl.class.js'
+import TeacherUrl from './TeacherUrl.class'
 import Account from './Account.class.js'
 import Router from './Router.class.js'
 import Dictionary from './Dictionary.class.js'
@@ -9,6 +10,7 @@ export default class Http {
   failCallback = null
   defaultCallback = null
   static send (args) {
+    var Url = MangerUrl
     let instance = new Http()
     args.data = args.data ? args.data : {}
     var headers = {
@@ -23,6 +25,10 @@ export default class Http {
     }
 
     if (instance.beforeCallback) instance.beforeCallback()
+
+    if (Account.role > 0 && Account.role < 99 && args.url in TeacherUrl) {
+      Url = TeacherUrl
+    }
 
     axios({
       url: Url[args.url],
@@ -50,6 +56,9 @@ export default class Http {
         }
         if ('detail' in data) {
           alert(data.detail)
+          if (data.detail === '您不具有教师权限！') {
+            Router.push('login')
+          }
         }
       }
       if (instance.defaultCallback) instance.defaultCallback()

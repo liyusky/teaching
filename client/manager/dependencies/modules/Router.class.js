@@ -30,11 +30,11 @@ export default class Router {
     try {
       result = localStorage.getItem(item)
     } catch (error) {}
-    if (this.notEmpty(item)) {
-      result = window.manager.$store.state[item]
-    } else if (this.isEmpty(result)) {
-      this.save(item, result)
-    }
+    // if (this.notEmpty(item)) {
+    //   result = window.manager.$store.state[item]
+    // } else if (this.isEmpty(result)) {
+    //   this.save(item, result)
+    // }
     return result
   }
 

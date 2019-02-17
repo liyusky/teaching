@@ -13,6 +13,7 @@
 // include dependence
 import HeaderComponent from '../../../dependencies/components/header/header.vue'
 import NvaComponent from '../../../dependencies/components/nva/nva.vue'
+import Storage from '../../../dependencies/modules/Storage.class.js'
 export default {
   name: 'StudentComponent',
   data () {
@@ -20,6 +21,9 @@ export default {
       // start datas
       // end datas
     }
+  },
+  created () {
+    Storage.initNav()
   },
   components: {
     HeaderComponent,

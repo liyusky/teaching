@@ -27,10 +27,10 @@
           <label class="item-label" for="curriculum-setting-update-school">学校：</label>
           <input class="item-input" id="plan-setting-add-teacher" type="text" readonly="readonly" v-model="college" placeholder="请点击选择学校" @click="selectSchool">
         </li> -->
-        <li class="list-item">
+        <!-- <li class="list-item">
           <label class="item-label" for="curriculum-setting-update-classroom">教室：</label>
           <input class="item-input" id="curriculum-setting-update-classroom" type="text" v-model="classroom">
-        </li>
+        </li> -->
         <li class="list-item">
           <label class="item-label" for="curriculum-setting-update-date">课时时间：</label>
           <flat-pickr
@@ -101,12 +101,12 @@ export default {
     this.cid = panel.cid
     this.lid = panel.lid
     this.curid = panel.curid
-    this.lesson = panel.lesson
+    this.lesson = panel.lessonDetail
     this.course = panel.course
     this.organization = panel.organization
     // this.school = panel.school
     // this.college = `${panel.college.name}${panel.college.district || ''}${Dictionary.rank[panel.college.level]}`
-    this.classroom = panel.classroom
+    // this.classroom = panel.classroom
     this.date = `${panel.launch.replace('Z', '.000Z')} to ${panel.deadline.replace('Z', '.000Z')}`
     this.data.date = `${panel.launch.replace('Z', '.000Z')} to ${panel.deadline.replace('Z', '.000Z')}`
   },
@@ -129,10 +129,10 @@ export default {
       }
       // if (this.school && this.data.school !== this.school) data.school = this.school
 
-      if (this.data.classroom !== this.classroom) {
-        if (!Check.appellation(this.classroom)) return
-        data.classroom = this.classroom
-      }
+      // if (this.data.classroom !== this.classroom) {
+      //   if (!Check.appellation(this.classroom)) return
+      //   data.classroom = this.classroom
+      // }
 
       if (this.data.date !== this.date) {
         if (!Check.dateRange(this.date)) return
@@ -166,7 +166,7 @@ export default {
       // this.school = ''
       this.date = ''
       this.lesson = ''
-      this.classroom = ''
+      // this.classroom = ''
     }
   },
   watch: {

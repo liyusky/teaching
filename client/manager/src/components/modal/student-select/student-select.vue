@@ -12,7 +12,7 @@
         <li class="list-item fl" v-for="(item, index) in students" :key="index" @click="select(item)">
           <div class="item-warp">
             <img class="warp-portrait" src="">
-            <p class="warp-name">{{item.name}}</p>
+            <p class="warp-name">{{item.detail.realname}}</p>
             <p class="warp-phone">{{item.phone}}</p>
             <!-- <p class="warp-school">{{getCollege(item.detail)}}</p> -->
           </div>

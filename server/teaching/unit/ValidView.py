@@ -115,6 +115,12 @@ class FormatParams(object):
             return True
         return False
 
+    def shortAccount(self, account):
+        account = re.sub(r'\s+', '', account, count=0)
+        if re.match(r'^[A-Za-z0-9_·@\-]{1,50}', account):
+            return True
+        return False
+
     def appellation(self, appellation):
         appellation = re.sub(r'\s+', '', appellation, count=0)
 
@@ -233,7 +239,7 @@ class Exist(object):
                         response = ResponseContent(code=401, description=10147, error=serializer.errors)
                 else:
                     serializer = UserProfileSerializer(user.userteachingprofile, data={
-                        'role': 100 if int(user.is_superuser) == 1 else 0,
+                        'role': 100 if int(user.is_superuser) == 1 else user.userteachingprofile.role,
                         'name': user.first_name + user.last_name,
                         'enable': 1 if user.is_active else 0
                     }, partial=True)
@@ -287,6 +293,20 @@ class Exist(object):
 
         return response
 
+    def exist_user(self, params):
+        response = ResponseContent(code=401, description=10104, error=10104)
+        try:
+            user = User.objects.filter(id=params['user'])
+            if user.exists():
+                response = user.first()
+        except Exception as e:
+            response.refresh(code=602, description=10558, error=e.__str__())
+
+        return response
+
+
+
+
     def exist_teacher(self, params):
         response = ResponseContent(code=401, description=10108, error=10108)
         # manager = UserTeachingProfile.objects.filter(id=params['mid']).exclude(Q(role=0) | Q(role=1) | Q(role=2)).first()
@@ -304,6 +324,7 @@ class Exist(object):
             response.refresh(code=602, description=10805, error=e.__str__())
 
         return response
+
 
     # def exist_school(self, params):
     #     response = ResponseContent(code=401, description=10110, error=10110)
@@ -448,6 +469,7 @@ class Exist(object):
             response = ResponseContent(code=602, description=10816, error=e.__str__())
             return response
 
+
 class CheckImageCode(object):
     def match_image_captcha(self, request, params):
         key = request.session.session_key
@@ -544,6 +566,14 @@ class ValidApiView(APIView, HasParams, FormatParams, Exist, CheckImageCode):
         #         if isinstance(enable, ResponseContent):
         #             enable.refresh(token=request.auth)
         #             return enable
+
+        if 'user' in params and 'exist-user' in self.process_list:
+            print('---------------user---------------')
+            account = self.exist_user(params)
+            self.detail['account'] = account
+            if isinstance(account, ResponseContent):
+                account.refresh(token=request.auth)
+                return account
 
         if ('teacher' in params or 'tid' in params) and 'exist-teacher' in self.process_list:
             print('---------------teacher---------------')

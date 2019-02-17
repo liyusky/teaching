@@ -2,7 +2,7 @@
   <!-- s 课程管理 -->
   <section class="course">
     <div class="course-nav">
-      <BtnComponent :setting="btn" @BTN_CLICK_EVENT="addCourse" class="nav-btn">
+      <BtnComponent :setting="btn" @BTN_CLICK_EVENT="addCourse" class="nav-btn" v-if="setPermission()">
         <i></i>
         <span>新增课程</span>
       </BtnComponent>
@@ -48,6 +48,11 @@ export default {
     Account.logout()
   },
   methods: {
+    setPermission () {
+      let show = true
+      if (Account.role < 99) show = false
+      return show
+    },
     addCourse () {
       Display.panel = 'course-add-course'
     },

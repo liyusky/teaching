@@ -21,7 +21,7 @@
             <button class="content-show-detail" :disabled="!item.enable" @click="updateTeacher(item)">修改</button>
           </td>
           <td class="table-70">{{index + 1}}</td>
-          <td class="table-110" :class="{'bg-red': !item.name}">{{item.name ? item.name : '未实名'}}</td>
+          <td class="table-110" :class="{'bg-red': !item.detail.realname}">{{item.detail.realname || '未实名'}}</td>
           <td class="table-130" :class="{'bg-red': !item.phone}">{{item.phone ? item.phone : '未绑定'}}</td>
           <td class="table-70">{{item.sex ? '男' : '女'}}</td>
           <td class="table-110" :class="{'bg-red': !item.role && item.role != 0}">{{role[item.role]}}</td>

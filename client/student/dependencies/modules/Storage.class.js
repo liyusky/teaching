@@ -26,32 +26,18 @@ export default class Storage {
   static getStorage (item) {
     let result = null
     try {
-      result = JSON.parse(localStorage.getItem(item))
+      result = localStorage.getItem(item)
+      if (result) {
+        result = JSON.parse(localStorage.getItem(item))
+      } else {
+        result = []
+      }
     } catch (error) {}
-    console.log(result)
-    if (this.notEmpty(item)) {
-      result = window.main.$store.state[item]
-    } else if (this.isEmpty(result)) {
-      this.save(item, result)
-    } else {
-      result = []
-      this.save(item, result)
-    }
     return [...result]
   }
 
-
-
-  static notEmpty (item) {
-    let result = false
-    let content = window.main.$store.state[item]
-    if (content.length > 0) result = true
-    return result
-  }
-
-  static isEmpty (data) {
-    let result = false
-    if (data !== null && data !== '' && data !== undefined && data === []) result = true
-    return result
+  static initNav () {
+    let nav = this.nav
+    window.main.$store.commit('nav', nav)
   }
 }

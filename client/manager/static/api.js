@@ -1,1 +1,2 @@
-var baseUrl = 'http://192.168.4.140:8080/teaching'
+var baseUrl = 'http://192.168.1.6:8080/teaching'
+var gameUrl = 'http://192.168.1.6:8081/game.html'

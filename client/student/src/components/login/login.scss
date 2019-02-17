@@ -7,8 +7,19 @@
   @include center();
   width: 100vw;
   height: 100vh;
-  &-bg {
+  &-background {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: -1;
+    width: 100vw;
+    height: 100vh;
     background-color: #b8e5f8;
+    img {
+      width: 100vw;
+      height: 100vh;
+    }
   }
   &-area {
     width: 432px;

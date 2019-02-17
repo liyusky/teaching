@@ -111,31 +111,26 @@ export default class Account {
     try {
       result = JSON.parse(localStorage.getItem(item))
     } catch (error) {}
-    if (this.notEmpty(item)) {
-      result = window.manager.$store.state[item]
-    } else if (this.isEmpty(result)) {
-      this.save(item, result)
-    }
     return {...result}
   }
 
-  static notEmpty (item) {
-    let result = false
-    let content = window.manager.$store.state[item]
+  // static notEmpty (item) {
+  //   let result = false
+  //   let content = window.manager.$store.state[item]
 
-    // let keys = ['uid', 'upid', 'phone', 'name', 'sex', 'role', 'school', 'grade', 'creator', 'description']
-    let keys = ['uid', 'upid', 'phone', 'name', 'sex', 'role', 'grade', 'creator', 'description']
-    keys.forEach(key => {
-      if (key in content) result = true
-    })
-    return result
-  }
+  //   // let keys = ['uid', 'upid', 'phone', 'name', 'sex', 'role', 'school', 'grade', 'creator', 'description']
+  //   let keys = ['uid', 'upid', 'phone', 'name', 'sex', 'role', 'grade', 'creator', 'description']
+  //   keys.forEach(key => {
+  //     if (key in content) result = true
+  //   })
+  //   return result
+  // }
 
-  static isEmpty (data) {
-    let result = false
-    if (data !== null && data !== '' && data !== undefined) result = true
-    return result
-  }
+  // static isEmpty (data) {
+  //   let result = false
+  //   if (data !== null && data !== '' && data !== undefined) result = true
+  //   return result
+  // }
 
   static logout () {
     if (!Account.uid) {

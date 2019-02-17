@@ -4,14 +4,14 @@
     <table class="table-header table-reset">
       <tr>
         <th class="table-70">详情</th>
-        <th class="table-70">修改</th>
+        <th class="table-70" v-if="setPermission()">修改</th>
         <th class="table-70">序号</th>
         <th class="table-150">名称</th>
         <th class="table-90">语言</th>
-        <th class="table-130">创建人</th>
+        <th class="table-130" v-if="setPermission()">创建人</th>
         <th class="table-90">适用年级</th>
         <th class="table-210">描述</th>
-        <th class="table-70">启用</th>
+        <th class="table-70" v-if="setPermission()">启用</th>
         <th class="table-70">编号</th>
       </tr>
     </table>
@@ -21,16 +21,16 @@
           <td class="table-70">
             <button class="content-show-detail" :disabled="!item.enable" @click="openDetail(item)">详情</button>
           </td>
-          <td class="table-70">
+          <td class="table-70" v-if="setPermission()">
             <button class="content-show-detail" :disabled="!item.enable" @click="updateCourse(item)">修改</button>
           </td>
           <td class="table-70">{{index + 1}}</td>
           <td class="table-150">{{item.name}}</td>
           <td class="table-90">{{language[item.language]}}</td>
-          <td class="table-130">{{item.creater.name}}（{{item.creater.phone}}）</td>
+          <td class="table-130" v-if="setPermission()">{{item.creater.name}}（{{item.creater.phone}}）</td>
           <td class="table-90">{{rank[item.grade]}}</td>
           <td class="table-210" :title="item.description">{{item.description}}</td>
-          <td class="table-70">
+          <td class="table-70" v-if="setPermission()">
             <button class="content-btn" :disabled="item.disabled" @click="forbid(item, index)">
               <i class="iconfont" :class="item.enable ? 'icon-tick': 'icon-cross'"></i>
             </button>
@@ -48,6 +48,7 @@
 import Communication from '../../../../../dependencies/modules/Communication.class.js'
 import Dictionary from '../../../../../dependencies/modules/Dictionary.class.js'
 import Display from '../../../../../dependencies/modules/Display.class.js'
+import Account from '../../../../../dependencies/modules/Account.class.js'
 import Http from '../../../../../dependencies/modules/Http.class.js'
 
 export default {
@@ -66,6 +67,11 @@ export default {
     this.getCourseList()
   },
   methods: {
+    setPermission () {
+      let show = true
+      if (Account.role < 99) show = false
+      return show
+    },
     openDetail (item) {
       Display.detail = 'course'
       Communication.detail = item

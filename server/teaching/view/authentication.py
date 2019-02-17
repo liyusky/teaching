@@ -26,7 +26,7 @@ class LoginByPassword(ValidApiView):
     process_list = ['no-jwt', 'exist-account', 'current-account', 'image-code', 'refresh-login']
     format_keys = ['phone', 'password', 'imageCode']
     check_list = {
-        'phone': 'account',
+        'phone': 'shortAccount',
         'password': 'password',
         'imageCode': 'imageCode',
     }

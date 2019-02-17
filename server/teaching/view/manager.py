@@ -10,7 +10,7 @@ from teaching.models import *
 from kudingmao.models import JudgeRecord as MaoCode, GameStage as MaoGameStage, UserStagesStatistic as MaoScore, Chapter as MaoGameChapter
 from teaching.serializers import *
 
-from teaching.unit.permission import TeacherPermission
+from teaching.unit.permission import ManagerPermission
 from teaching.response_content import ResponseContent
 
 from rest_framework_jwt.authentication import JSONWebTokenAuthentication
@@ -21,11 +21,9 @@ from kudingmao.stage_controller import unlockNewChapter as mao_open_chapter, \
     isChapterUnlocked as mao_chapter_unlock
 
 #课程 Cls
-
-
 class ClassList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
 
     def post(self, request, *args, **kwargs):
         response = ResponseContent(code=200, token=request.auth, description=12008)
@@ -44,7 +42,7 @@ class ClassList(ValidApiView):
 
 class AddClass(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     # process_list = ['exist-teacher', 'exist-school']
     process_list = ['exist-teacher',]
     format_keys = ['name', 'teacher', 'launch', 'deadline']
@@ -95,7 +93,7 @@ class AddClass(ValidApiView):
 
 class UpdateClass(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     # process_list = ['exist-teacher', 'exist-class', 'exist-school']
     process_list = ['exist-teacher', 'exist-class']
     format_keys = ['oid']
@@ -129,7 +127,7 @@ class UpdateClass(ValidApiView):
 #班级课程关系  ClsCourse
 class PlanList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-class', ]
     format_keys = ['oid']
     check_list = {
@@ -157,7 +155,7 @@ class PlanList(ValidApiView):
 
 class AddPlan(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     # process_list = ['exist-class', 'exist-school', 'exist-course']
     process_list = ['exist-class', 'exist-course']
     format_keys = ['oid', 'cid', 'launch', 'deadline', ]
@@ -203,7 +201,7 @@ class AddPlan(ValidApiView):
 
 class UpdatePlan(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     # process_list = ['exist-class', 'exist-school', 'exist-course']
     process_list = ['exist-class', 'exist-course', 'exist-plan']
     format_keys = ['pid']
@@ -260,7 +258,7 @@ class UpdatePlan(ValidApiView):
 # 班级学生 ClsStudent
 class EnrollList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-class', ]
     format_keys = ['oid']
     check_list = {
@@ -288,7 +286,7 @@ class EnrollList(ValidApiView):
 
 class AddEnroll(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-class', 'exist-student']
     format_keys = ['oid', 'student', 'status', ]
     check_list = {
@@ -331,9 +329,10 @@ class AddEnroll(ValidApiView):
 
         return response
 
+
 class UpdateEnroll(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-class', 'exist-student', 'exist-enroll']
     format_keys = ['eid']
     check_list = {
@@ -378,11 +377,10 @@ class UpdateEnroll(ValidApiView):
         return response
 
 
-
 #课程 Course
 class CourseList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
 
     def post(self, request, *args, **kwargs):
         response = ResponseContent(code=200, token=request.auth, description=12017)
@@ -400,7 +398,7 @@ class CourseList(ValidApiView):
 
 class AddCourse(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     format_keys = ['name', 'language',]
     check_list = {
         'name': 'appellation',
@@ -431,7 +429,7 @@ class AddCourse(ValidApiView):
 
 class UpdateCourse(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-course',]
     format_keys = ['cid']
     check_list = {
@@ -463,7 +461,7 @@ class UpdateCourse(ValidApiView):
 #课时 Lesson
 class LessonList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-course', ]
     format_keys = ['cid']
     check_list = {
@@ -491,7 +489,7 @@ class LessonList(ValidApiView):
 
 class AddLesson(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-course', ]
     format_keys = ['cid', 'name']
     check_list = {
@@ -526,7 +524,7 @@ class AddLesson(ValidApiView):
 
 class UpdateLesson(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-lesson', 'exist-course', ]
     format_keys = ['lid']
     check_list = {
@@ -557,7 +555,7 @@ class UpdateLesson(ValidApiView):
 # 课程表 Curriculum
 class CurriculumList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-class', 'exist-course', ]
     format_keys = ['oid', 'cid']
     check_list = {
@@ -586,17 +584,17 @@ class CurriculumList(ValidApiView):
 
 class AddCurriculum(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     # process_list = ['exist-lesson', 'exist-class', 'exist-school']
     process_list = ['exist-lesson', 'exist-class',]
-    format_keys = ['oid', 'lid', 'launch', 'deadline', 'classroom',]
+    format_keys = ['oid', 'lid', 'launch', 'deadline',]
     check_list = {
         'oid': 'id',
         'lid': 'id',
         # 'school': 'id',
         'launch': 'iso',
         'deadline': 'iso',
-        'classroom': 'appellation'
+        # 'classroom': 'appellation'
     }
 
     def post(self, request, *args, **kwargs):
@@ -631,9 +629,10 @@ class AddCurriculum(ValidApiView):
             response = ResponseContent(code=401, description=10142, error=10142)
         return response
 
+
 class UpdateCurriculum(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     # process_list = ['exist-lesson', 'exist-school', 'exist-curriculum']
     process_list = ['exist-lesson', 'exist-curriculum']
     format_keys = ['curid']
@@ -674,10 +673,11 @@ class UpdateCurriculum(ValidApiView):
 
         return response
 
+
 #学生 Student
 class StudentList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     check_list = {
         'keywords': 'appellation'
     }
@@ -702,7 +702,7 @@ class StudentList(ValidApiView):
 
 class AddStudent(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['no-exist-account']
     format_keys = ['account', 'password', 'name', 'sex', 'grade',]
     check_list = {
@@ -757,7 +757,7 @@ class AddStudent(ValidApiView):
 
 class UpdateStudent(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-student', 'bind-phone']
     format_keys = ['sid']
     check_list = {
@@ -811,7 +811,7 @@ class UpdateStudent(ValidApiView):
 #教师 Teacher
 class TeacherList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
 
 
     def post(self, request, *args, **kwargs):
@@ -830,7 +830,7 @@ class TeacherList(ValidApiView):
 
 class AddTeacher(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['no-exist-account']
     format_keys = ['account', 'password', 'name', 'sex', 'role',]
     check_list = {
@@ -886,7 +886,7 @@ class AddTeacher(ValidApiView):
 
 class UpdateTeacher(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-teacher', 'bind-phone']
     format_keys = ['tid']
     check_list = {
@@ -939,7 +939,7 @@ class UpdateTeacher(ValidApiView):
 #作业 Homework
 class HomeworkList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-class', 'exist-lesson']
     check_list = {
         'oid': 'id',
@@ -974,7 +974,7 @@ class HomeworkList(ValidApiView):
 
 class AddHomework(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-curriculum',]
     format_keys = ['curid', 'task', 'launch', 'deadline', 'name']
     check_list = {
@@ -1019,7 +1019,7 @@ class AddHomework(ValidApiView):
 
 class UpdateHomework(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-homework', ]
     format_keys = ['hid']
     check_list = {
@@ -1051,7 +1051,7 @@ class UpdateHomework(ValidApiView):
 #作业内容
 class QuestionList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-homework', 'exist-class', 'exist-lesson', ]
     check_list = {
         'hid': 'id',
@@ -1088,7 +1088,7 @@ class QuestionList(ValidApiView):
 
 class AddQuestion(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-homework', ]
     format_keys = ['hid', 'gametype', 'gcid', 'idx']
     check_list = {
@@ -1149,7 +1149,7 @@ class AddQuestion(ValidApiView):
 
 class UpdateQuestion(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-question', ]
     format_keys = ['qid']
     check_list = {
@@ -1224,7 +1224,7 @@ class UpdateQuestion(ValidApiView):
 # 学校 School
 # class AddSchool(ValidApiView):
 #     authentication_classes = [JSONWebTokenAuthentication, ]
-#     permission_classes = [IsAuthenticated, TeacherPermission, ]
+#     permission_classes = [IsAuthenticated, ManagerPermission, ]
 #     format_keys = ['name', 'level']
 #     check_list = {
 #         'name': 'name',
@@ -1270,7 +1270,7 @@ class UpdateQuestion(ValidApiView):
 
 # class UpdateSchool(ValidApiView):
 #     authentication_classes = [JSONWebTokenAuthentication, ]
-#     permission_classes = [IsAuthenticated, TeacherPermission, ]
+#     permission_classes = [IsAuthenticated, ManagerPermission, ]
 #     process_list = ['exist-school']
 #     format_keys = ['school']
 #     check_list = {
@@ -1320,7 +1320,7 @@ class UpdateQuestion(ValidApiView):
 # 游戏
 class GameChapterList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     format_keys = ['gametype']
     check_list = {
         'gametype': 'range2'
@@ -1345,10 +1345,9 @@ class GameChapterList(ValidApiView):
         return Response(response.content(), status=state)
 
 
-
 class GameStageList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     format_keys = ['gametype', 'gcid']
     check_list = {
         'gametype': 'range2',
@@ -1378,7 +1377,7 @@ class GameStageList(ValidApiView):
 # 案例
 class ExampleList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-lesson']
     format_keys = ['lid', 'enable']
     check_list = {
@@ -1414,7 +1413,7 @@ class ExampleList(ValidApiView):
 
 class AddExample(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-lesson']
     format_keys = ['lid', 'gametype', 'gcid', 'idx']
     check_list = {
@@ -1474,7 +1473,7 @@ class AddExample(ValidApiView):
 
 class UpdateExample(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-example']
     format_keys = ['leid']
     check_list = {
@@ -1548,7 +1547,7 @@ class UpdateExample(ValidApiView):
 # 作业成绩
 class ScoreList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-class']
     format_keys = ['gcid', 'oid']
     check_list = {
@@ -1583,7 +1582,7 @@ class ScoreList(ValidApiView):
 # 课时内容成绩
 class ExampleScoreList(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-class']
     format_keys = ['oid', 'gcid']
     check_list = {
@@ -1617,7 +1616,7 @@ class ExampleScoreList(ValidApiView):
 
 class AddComment(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-student', 'exist-teacher', 'exist-homework']
     format_keys = ['sid', 'tid', 'hid', 'content']
     check_list = {
@@ -1647,7 +1646,7 @@ class AddComment(ValidApiView):
 
 class UpdateComment(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    permission_classes = [IsAuthenticated, ManagerPermission, ]
     process_list = ['exist-comment',]
     format_keys = ['comment', 'content']
     check_list = {
@@ -1674,7 +1673,7 @@ class UpdateComment(ValidApiView):
 
 class GameStageOpenChapter(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission]
+    permission_classes = [IsAuthenticated, ManagerPermission]
     process_list = ['exist-class']
     format_keys = ['gcid', 'oid']
     check_list = {
@@ -1707,7 +1706,7 @@ class GameStageOpenChapter(ValidApiView):
 
 class GameStageIsUnlock(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
-    permission_classes = [IsAuthenticated, TeacherPermission]
+    permission_classes = [IsAuthenticated, ManagerPermission]
     process_list = ['exist-class']
     format_keys = ['gcid', 'oid']
     check_list = {
@@ -1734,7 +1733,7 @@ class GameStageIsUnlock(ValidApiView):
                     if result:
                         openStatus = result
         except Exception as e:
-            response.refresh(code=602, description=10512, error=e.__str__())
+            response.refresh(code=602, description=10560, error=e.__str__())
             state = status.HTTP_500_INTERNAL_SERVER_ERROR
 
         response.data = openStatus

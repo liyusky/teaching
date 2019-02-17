@@ -196,22 +196,23 @@ class UpdateAccount(ValidApiView):
 class GameUrl(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
-    process_list = ['exist-student', ]
-    format_keys = ['student', 'gcid']
+    process_list = ['exist-user', ]
+    format_keys = ['user', 'gcid']
     check_list = {
         'gcid': 'id',
-        'student': 'id'
+        'user': 'id'
     }
 
     def post(self, request, *args, **kwargs):
         response = ResponseContent(code=200, token=request.auth, description=12050)
         state = status.HTTP_200_OK
+
         detail = self.readiness(request)
         if isinstance(detail, ResponseContent):
             return Response(detail.content(), status=status.HTTP_406_NOT_ACCEPTABLE)
 
-        student = detail['student']
-        url = mao_access_chapter(student.user, request.data['gcid'])
+        account = detail['account']
+        url = mao_access_chapter(account, request.data['gcid'])
         if url:
             response.data = url
         else:

@@ -4,7 +4,8 @@
     <div class="record-code">
       <div class="code-title">源码</div>
       <pre>
-        <code class="cpp hljs" id="code"></code>
+        <code class="cpp hljs" id="code">
+        </code>
       </pre>
     </div>
     <div class="record-result">
@@ -54,9 +55,12 @@ export default {
         this.result = data.result || ''
         this.output = data.output || ''
         let codeDom = document.getElementById('code')
-        codeDom.innerText = data.code || ''
-        window.hljs.highlightBlock(codeDom)
         let $ = window.$
+        $('code').text(data.code || '')
+        window.hljs.configure({
+          languages: 'cpp'
+        })
+        window.hljs.highlightBlock(codeDom)
         $.each($('code'), (index, item) => {
           $(item).html(`<ul class="content"><li>${$(item).html().replace(/\n/g, '\n</li><li>')}\n</li></ul>`)
         })

@@ -149,7 +149,7 @@ class Course(models.Model):
         return self.name
 
 class Lesson(models.Model):
-    course = models.ForeignKey(Course, on_delete=models.DO_NOTHING,)
+    course = models.ForeignKey(Course, related_name="LessonCourse", on_delete=models.DO_NOTHING,)
     name = models.CharField(default="", max_length=200)
     description = models.TextField(default="")
     creator = models.ForeignKey(User, default=1, on_delete=models.DO_NOTHING, limit_choices_to={'role__gt': 0, 'enable': 1})
@@ -206,12 +206,12 @@ class ClsStudent(models.Model):
 
 class ClsCourse(models.Model):
     cls = models.ForeignKey(Cls, on_delete=models.CASCADE, limit_choices_to={'enable': 1})
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, limit_choices_to={'enable': 1})
-    teacher = models.ForeignKey(User, on_delete=models.CASCADE, limit_choices_to={'role__gt': 0, 'enable': 1})
+    course = models.ForeignKey(Course, related_name='ClsCourseCourse', on_delete=models.CASCADE, limit_choices_to={'enable': 1})
+    teacher = models.ForeignKey(User, on_delete=models.CASCADE,)
     #school = models.ForeignKey(School, default=1, on_delete=models.DO_NOTHING)
     start_time = models.DateTimeField(auto_now_add=False, null=True)
     end_time = models.DateTimeField(auto_now_add=False, null=True)
-    creator = models.ForeignKey(User, default=1, related_name='ClsCourseCreator', on_delete=models.DO_NOTHING, limit_choices_to={'role__gt': 0, 'enable': 1})
+    creator = models.ForeignKey(User, default=1, related_name='ClsCourseCreator', on_delete=models.DO_NOTHING,)
     create_time = models.DateTimeField(auto_now_add=False, null=True)
     enable = models.BooleanField(default=1, choices=BOOLEAN_CHOICES)
 

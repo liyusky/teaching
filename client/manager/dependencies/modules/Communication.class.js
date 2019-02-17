@@ -66,27 +66,28 @@ export default class Communication {
     try {
       result = JSON.parse(localStorage.getItem(item))
     } catch (error) {}
-    if (this.notEmpty(item)) {
-      result = window.manager.$store.state[item]
-    } else if (this.isEmpty(result)) {
-      this.save(item, result)
-    }
+    // if (this.isEmpty(result)) {
+    //   this.save(item, result)
+    // } else if (this.notEmpty(item)) {
+    //   result = window.manager.$store.state[item]
+    //   this.save(item, result)
+    // }
     return {...result}
   }
 
-  static notEmpty (item) {
-    let result = false
-    let content = window.manager.$store.state[item]
-    let keys = ['lesson', 'modal', 'stage', 'code', 'example', 'homework', 'record']
-    keys.forEach(key => {
-      if (key in content) result = true
-    })
-    return result
-  }
+  // static notEmpty (item) {
+  //   let result = false
+  //   let content = window.manager.$store.state[item]
+  //   let keys = ['lesson', 'modal', 'stage', 'code', 'example', 'homework', 'record']
+  //   keys.forEach(key => {
+  //     if (key in content) result = true
+  //   })
+  //   return result
+  // }
 
-  static isEmpty (data) {
-    let result = false
-    if (data !== null && data !== '' && data !== undefined) result = true
-    return result
-  }
+  // static isEmpty (data) {
+  //   let result = false
+  //   if (data !== null && data !== '' && data !== undefined) result = true
+  //   return result
+  // }
 }

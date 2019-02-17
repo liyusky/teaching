@@ -1,7 +1,10 @@
 <template>
   <!-- s  -->
   <section class="empower">
-    <ImageBgComponent class="empower-bg" :imageBg="imageBg"></ImageBgComponent>
+    <div class="empower-background">
+      <img src="../../../static/images/bg.jpg">
+    </div>
+    <!-- <ImageBgComponent class="empower-bg" :imageBg="imageBg"></ImageBgComponent> -->
     <div class="empower-area" :class="status">
       <div class="area-logo">
         <img class="logo-image" src="../../assets/logo.png">
@@ -16,7 +19,7 @@
         </li>
         <li class="list-item border-1">
           <input class="item-input" v-model="imageCode" type="text" maxlength="4" placeholder="请输入图形验证码" @keyup.enter="submit">
-          <img class="item-image" :src="codeImage" @click="getCodeImage" @error="getCodeImage">
+          <img class="item-image" :src="codeImage" @click="getCodeImage" @error="getErrorCodeImage">
         </li>
         <li class="list-item border-1" v-show="smsMode || status != 'login'">
           <input class="item-input" v-model="smsCode" type="text" maxlength="6" placeholder="请输入短信验证码" @keyup.enter="submit">
@@ -49,7 +52,8 @@ import Check from '../../../dependencies/modules/Check.class.js'
 import Display from '../../../dependencies/modules/Display.class.js'
 import Http from '../../../dependencies/modules/Http.class.js'
 import Router from '../../../dependencies/modules/Router.class.js'
-import ImageBgComponent from '../../../dependencies/components/image-bg/image-bg.vue'
+import Storage from '../../../dependencies/modules/Storage.class.js'
+// import ImageBgComponent from '../../../dependencies/components/image-bg/image-bg.vue'
 import InputsComponent from '../../../dependencies/components/inputs/inputs.vue'
 export default {
   name: 'LoginComponent',
@@ -73,19 +77,21 @@ export default {
       sendSMSBtnText: '获取短信验证码',
       urlParams: {},
       notAuthMode: true,
+      errorRequestMark: 3
       // start datas
-      imageBg: '../../../static/images/bg.jpg'
       // end datas
     }
   },
   components: {
-    ImageBgComponent,
+    // ImageBgComponent,
     InputsComponent
     // include components
   },
   created () {
+    this.getCodeImage()
     this.clearStorage()
     this.setAuthInit()
+    Storage.initNav()
   },
   mounted () {
     this.getCodeImage()
@@ -93,6 +99,13 @@ export default {
   methods: {
     getCodeImage () {
       this.codeImage = `${window.baseUrl}/common/image-code?time=${new Date() + Math.random()}`
+      this.errorRequestMark = 3
+    },
+    getErrorCodeImage () {
+      if (this.errorRequestMark > 0) {
+        this.codeImage = `${window.baseUrl}/common/image-code?time=${new Date() + Math.random()}`
+      }
+      this.errorRequestMark--
     },
     switchStatus (state) {
       switch (this.status) {
@@ -177,7 +190,7 @@ export default {
       if (this.status === 'forget-password') this.forgetPassword()
     },
     loginByPassword () {
-      if (!Check.account(this.phone)) return
+      if (!Check.shortAccount(this.phone)) return
       if (!Check.password(this.password)) return
       if (!Check.imageCode(this.imageCode)) return
       this.submitDisabled = true
@@ -190,20 +203,7 @@ export default {
         }
       }).success(data => {
         Account.info = data
-        if (this.notAuthMode) {
-          Router.push('student')
-          if (!data.name) Display.panel = 'user-update-user'
-        } else {
-          if (Account.uid * 1 !== this.urlParams.student * 1) {
-            alert('请使用属于您的账户登录')
-            return
-          }
-          let url = `${window.gameUrl}?`
-          url += `gcid=${this.urlParams.gcid}&`
-          url += `token=${Account.token}&`
-          url += `student=${this.urlParams.student}`
-          window.open(url, 'game')
-        }
+        this.loginSuccess()
         // if (!data.name || !data.school) Display.panel = 'user-update-user'
       }).fail(data => {
       }).default(() => {
@@ -223,26 +223,39 @@ export default {
         }
       }).success(data => {
         Account.info = data
-        if (this.notAuthMode) {
-          Router.push('student')
-          if (!data.name) Display.panel = 'user-update-user'
-        } else {
-          if (Account.uid * 1 !== this.urlParams.student * 1) {
-            alert('请使用属于您的账户登录')
-            return
-          }
-          let url = `${window.gameUrl}?`
-          url += `gcid=${this.urlParams.gcid}&`
-          url += `token=${Account.token}&`
-          url += `student=${this.urlParams.student}`
-          window.open(url, 'game')
-        }
+        this.loginSuccess()
       }).fail(data => {
         console.log(data)
       }).default(() => {
         this.getCodeImage()
         this.submitDisabled = false
       })
+    },
+    loginSuccess () {
+      if (this.notAuthMode) {
+        Router.push('student')
+        if (!Account.name) Display.panel = 'user-update-user'
+      } else {
+        if (Account.uid * 1 !== this.urlParams.user * 1) {
+          alert('请使用属于您的账户登录')
+          return
+        }
+        switch (this.urlParams.type * 1) {
+          case 1:
+            Router.transformNewStorage()
+            Router.push(this.urlParams.next)
+            break
+          case 2:
+            let url = `${window.gameUrl}?`
+            url += `gcid=${this.urlParams.gcid}&`
+            url += `token=${Account.token}&`
+            url += `origin=student&`
+            url += `user=${this.urlParams.user}&`
+            url += `time=${(new Date()).getTime()}`
+            window.open(url, 'game')
+            break
+        }
+      }
     },
     register () {
       if (!Check.phone(this.phone)) return
@@ -307,17 +320,30 @@ export default {
       this.$store.commit('nav', [])
       this.$store.commit('content', false)
       this.$store.commit('communication', {})
-      localStorage.clear()
+      window.localStorage.removeItem('nav')
+      window.localStorage.removeItem('account')
+      window.localStorage.removeItem('communication')
     },
     setAuthInit () {
       let params = this.getRequestParams()
       if (!('next' in params)) return
-      if (!('student' in params)) return
-      if (!('gcid' in params)) return
-      if (!Check.id(params.student)) return
-      if (!Check.id(params.gcid)) return
-      this.urlParams = params
-      this.notAuthMode = false
+      if (!('type' in params)) return
+      if (!('user' in params)) return
+      if (!Check.id(params.type)) return
+      if (!Check.id(params.user)) return
+      switch (params.type * 1) {
+        case 1:
+          this.notAuthMode = false
+          this.urlParams = params
+          break
+        case 2:
+          if (!('user' in params)) return
+          if (!('gcid' in params)) return
+          if (!Check.id(params.user)) return
+          this.urlParams = params
+          this.notAuthMode = false
+          break
+      }
     },
     getRequestParams () {
       let url = window.location.href

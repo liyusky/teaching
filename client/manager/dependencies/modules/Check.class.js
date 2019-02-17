@@ -136,6 +136,28 @@ export default class Check {
     return true
   }
 
+  static shortAccount (account) {
+    account = account ? account.replace(/\s+/g, '') : account
+    if (!account) {
+      this.show('请输入账户')
+      return false
+    }
+
+    let pat = new RegExp(/[A-Za-z0-9_·@\-]{1,50}/)
+    if (!pat.test(account)) {
+      this.show('账户格式错误')
+      return false
+    }
+    return true
+  }
+
+  static id (id) {
+    id = id ? id.replace(/\s+/g, '') : id
+    id *= 1
+    if (isNaN(id)) return false
+    return true
+  }
+
   static age (age) {
     age = age ? age.replace(/\s+/g, '') : age
     age = parseInt(age)

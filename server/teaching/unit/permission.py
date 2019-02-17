@@ -7,22 +7,21 @@ class TeacherPermission(BasePermission):
         user = request.user
         if hasattr(user, 'userteachingprofile'):
             profile = user.userteachingprofile
-            if int(profile.role) > 0:
+            if int(profile.role) > 0 and int(profile.role) < 99:
                 response = True
         return response
 
 
 class ManagerPermission(BasePermission):
-    message = '您不具有班主任或管理员权限！'
+    message = '您不具有管理员权限！'
 
     def has_permission(self, request, view):
-        print(request.user)
         response = False
         user = request.user
-        if isinstance(user, dict):
-            user = user['user']
-        if int(user.role) in [2, 3]:
-            response = True
+        if hasattr(user, 'userteachingprofile'):
+            profile = user.userteachingprofile
+            if int(profile.role) in [99, 100]:
+                response = True
         return response
 
 

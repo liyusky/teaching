@@ -27,10 +27,10 @@
           <label class="item-label" for="curriculum-setting-add-school">学校：</label>
           <input class="item-input" id="plan-setting-add-teacher" type="text" readonly="readonly" v-model="college" placeholder="请点击选择学校" @click="selectSchool">
         </li> -->
-        <li class="list-item">
+        <!-- <li class="list-item">
           <label class="item-label" for="curriculum-setting-add-classroom">教室：</label>
           <input class="item-input" id="curriculum-setting-add-classroom" type="text" v-model="classroom" placeholder="请输入教室">
-        </li>
+        </li> -->
         <li class="list-item">
           <label class="item-label" for="curriculum-setting-add-date">课时时间：</label>
           <flat-pickr
@@ -109,7 +109,7 @@ export default {
     },
     confirm () {
       if (!Check.dateRange(this.date)) return
-      if (!Check.appellation(this.classroom)) return
+      // if (!Check.appellation(this.classroom)) return
       Http.send({
         url: 'AddCurriculum',
         data: {
@@ -119,7 +119,7 @@ export default {
           lesson: this.lid,
           cid: this.cid,
           // school: this.school,
-          classroom: this.classroom,
+          // classroom: this.classroom,
           launch: this.date.split(' to ')[0],
           deadline: this.date.split(' to ')[1]
         }
@@ -142,7 +142,7 @@ export default {
       this.lid = ''
       this.lesson = ''
       // this.school = 1
-      this.classroom = ''
+      // this.classroom = ''
       this.date = ''
     }
   },

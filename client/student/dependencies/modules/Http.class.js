@@ -39,7 +39,7 @@ export default class Http {
     }).catch(error => {
       if (error.response) {
         if (error.response.status === 401) {
-          Router.push('login')
+          Router.refreshAuth(window.main.$route.name)
         }
         let data = error.response.data
         if ('description' in data) alert(data.description)

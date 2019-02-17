@@ -8,7 +8,7 @@
           <th class="table-130">名称</th>
           <th class="table-130">进度</th>
           <th class="table-70">最高分</th>
-          <th class="table-70">游戏</th>
+          <!-- <th class="table-70">游戏</th> -->
           <th class="table-70">提交记录</th>
         </tr>
       </table>
@@ -21,9 +21,9 @@
               <ScheduleComponent :schedule="item.score"></ScheduleComponent>
             </td>
             <td class="table-70">{{item.score}}</td>
-            <td class="table-70">
+            <!-- <td class="table-70">
               <button class="content-show-detail" @click="taget(item.url)">跳转</button>
-            </td>
+            </td> -->
             <td class="table-70">
               <button class="content-show-detail" @click="showRecode(item)">查看</button>
             </td>
