@@ -29,7 +29,7 @@ module.exports = {
     inputs: false,
     modal: false,
     panel: false,
-    'search-bar': false,
+    'search-bar': null,
     separator: false,
     template: false
   }

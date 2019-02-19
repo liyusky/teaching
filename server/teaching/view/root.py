@@ -27,6 +27,7 @@ class UserBindProfile(ValidApiView):
         result = {}
         count = 0
         formerly = 0
+        refreshName = 0
         add = 0
         surplus = 0
         try:
@@ -50,6 +51,12 @@ class UserBindProfile(ValidApiView):
                         surplus += 1
                 else:
                     formerly += 1
+                    if user.first_name + user.last_name:
+                        serializer = UserProfileSerializer(user.userteachingprofile, data={
+                            'name': user.first_name + user.last_name,
+                        }, partial=True)
+                        if serializer.is_valid():
+                            serializer.save()
             response.data = {
                 'count': count,
                 'formerly': formerly,

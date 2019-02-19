@@ -3,6 +3,7 @@
   <section class="student-select">
     <div class="select-header">
       <p class="header-title">选择学员</p>
+      <SearchBarComponent @SEARCH_EVENT="search" @REFRESH_EVENT="refresh"></SearchBarComponent>
       <div class="header-close" @click="cancel">
         <i>x</i>
       </div>
@@ -29,6 +30,7 @@ import Communication from '../../../../dependencies/modules/Communication.class.
 // import Dictionary from '../../../../dependencies/modules/Dictionary.class.js'
 import Display from '../../../../dependencies/modules/Display.class.js'
 import Http from '../../../../dependencies/modules/Http.class.js'
+import SearchBarComponent from '../../../../dependencies/components/search-bar/search-bar.vue'
 
 export default {
   name: 'StudentSelectModalComponent',
@@ -41,6 +43,7 @@ export default {
   },
   components: {
     // include chunk
+    SearchBarComponent
   },
   created () {
     this.getStudentList()
@@ -60,9 +63,18 @@ export default {
       Communication.modal = item
       this.cancel()
     },
-    getStudentList () {
+    refresh (keywords) {
+      this.getStudentList(keywords)
+    },
+    search (keywords) {
+      this.getStudentList(keywords)
+    },
+    getStudentList (keywords) {
+      let data = {}
+      if (keywords) data.keywords = keywords
       Http.send({
-        url: 'StudentList'
+        url: 'StudentList',
+        data: data
       }).success(data => {
         this.students = data
       }).fail(data => {
