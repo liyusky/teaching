@@ -27,7 +27,7 @@
         </table>
       </div>
     </div>
-    <!-- <p class="detail-valuation" v-show="!evaluate">
+    <p class="detail-valuation" v-show="!evaluate">
       <span class="fz-24">评语：</span>
       <span class="fz-18">{{comment}}</span>
     </p>
@@ -45,7 +45,7 @@
       <button class="btn btn-update fz-15 color-white" v-show="!evaluate" @click="updateEdit">
         <div>更新</div>
       </button>
-    </div> -->
+    </div>
   </section>
   <!-- s  -->
 </template>
@@ -70,65 +70,59 @@ export default {
     // include components
   },
   created () {
-    console.log(Communication.detail)
-    // this.getScore()
     this.formatData({...Communication.detail})
-    // this.getComment()
-    // this.init()
+    this.getComment()
   },
   methods: {
-    // submitComment () {
-    //   this.evaluate = false
-    //   if (this.commentId !== '') {
-    //     Http.send({
-    //       url: 'UpdateComment',
-    //       data: {
-    //         comment: this.commentId,
-    //         content: this.comment
-    //       }
-    //     }).success(data => {
-    //     }).fail(data => {
-    //       console.log(data)
-    //     })
-    //   } else {
-    //     Http.send({
-    //       url: 'AddComment',
-    //       data: {
-    //         hid: Communication.detail.hid,
-    //         homework: Communication.detail.hid,
-    //         sid: Communication.detail.id,
-    //         student: Communication.detail.student,
-    //         tid: Account.upid,
-    //         content: this.comment
-    //       }
-    //     }).success(data => {
-    //       this.getComment()
-    //     }).fail(data => {
-    //       console.log(data)
-    //     })
-    //   }
-    // },
-    // getComment () {
-    //   Http.send({
-    //     url: 'CommentSingle',
-    //     data: {
-    //       hid: Communication.detail.hid,
-    //       sid: Communication.detail.id,
-    //       student: Communication.detail.student,
-    //       tid: Account.upid
-    //     }
-    //   }).success(data => {
-    //     if (data.length) {
-    //       this.comment = data[0].content
-    //       this.commentId = data[0].comment
-    //     }
-    //   }).fail(data => {
-    //     console.log(data)
-    //   })
-    // },
-    // updateEdit () {
-    //   this.evaluate = true
-    // },
+    submitComment () {
+      this.evaluate = false
+      if (this.commentId) {
+        Http.send({
+          url: 'UpdateComment',
+          data: {
+            comment: this.commentId,
+            content: this.comment
+          }
+        }).success(data => {
+        }).fail(data => {
+          console.log(data)
+        })
+      } else {
+        Http.send({
+          url: 'AddComment',
+          data: {
+            hid: Communication.detail.hid,
+            student: Communication.detail.student,
+            content: this.comment
+          }
+        }).success(data => {
+          this.getComment()
+        }).fail(data => {
+          console.log(data)
+        })
+      }
+    },
+    getComment () {
+      Http.send({
+        url: 'CommentSingle',
+        data: {
+          hid: Communication.detail.hid,
+          student: Communication.detail.student
+          // tid: Account.uid
+        }
+      }).success(data => {
+        if (data.comment) {
+          this.comment = data.content
+          this.commentId = data.comment
+          this.evaluate = false
+        }
+      }).fail(data => {
+        console.log(data)
+      })
+    },
+    updateEdit () {
+      this.evaluate = true
+    },
     getScore () {
       Http.send({
         url: 'GameStageScore',
@@ -138,7 +132,6 @@ export default {
         }
       }).success(data => {
       }).fail(data => {
-        console.log(data)
       })
     },
     formatData (data) {
@@ -146,7 +139,6 @@ export default {
       let max = 0
 
       let content = []
-      console.log(data.gsid[0])
       let gisdss = data.gsid
       let scoress = data.score
       let stagess = data.stage

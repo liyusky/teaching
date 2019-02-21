@@ -64,6 +64,9 @@ export default {
   },
   created () {
     this.oid = Communication.panel.oid
+    let panel = {...Communication.panel}
+    panel.page = 'add-enroll'
+    Communication.panel = panel
   },
   methods: {
     selectStudent () {
@@ -77,12 +80,12 @@ export default {
         url: 'AddEnroll',
         data: {
           oid: this.oid,
-          student: this.sid,
-          status: this.status,
-          cls: this.oid
+          student: JSON.stringify(this.sid)
         }
       }).success(data => {
         Display.api = 'EnrollList'
+        let message = `${data.success}条数据更新成功，${data.fail}条数据更新失败，${data.used}条数据本身已存在，${data.error}条数据发生错误。`
+        alert(message)
       }).fail(data => {
       }).default(() => {
         this.confirmDisabled = false
@@ -106,10 +109,14 @@ export default {
   },
   watch: {
     '$store.state.modal' (modal, previous) {
-      console.log(modal, previous, Communication.modal)
       if (previous === 'student-select' && modal === false && Communication.modal) {
-        this.student = `${Communication.modal.detail.realname}（${Communication.modal.phone}）`
-        this.sid = {...Communication.modal}.user
+        let [student, sid] = ['', []]
+        Communication.modal.forEach(item => {
+          student += `${item.detail.realname}（${item.phone}），`
+          sid.push(item.user)
+        })
+        this.student = student
+        this.sid = sid
       } else if (previous === 'course-select' && modal === false && Communication.modal) {
         this.course = `${Communication.modal.name}（${Dictionary.language[Communication.modal.language]}，${Dictionary.rank[Communication.modal.grade]} ）`
         this.cid = {...Communication.modal}.cid

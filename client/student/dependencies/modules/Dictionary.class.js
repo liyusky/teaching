@@ -24,12 +24,18 @@ export default class Dictionary {
   static rank = ['未定', '综合', '小学', '初中', '高中']
   static Game = ['酷町猫', '酷町打字']
   static page = {
-    'student': `课程列表`,
+    'student-course': `课程列表`,
     'student-lesson': '课程内容',
-    'student-stage': '游戏章节内容',
-    'student-homework': '作业详情',
     'student-example': '课时详情',
-    'student-code': '代码详情',
-    'student-record': '提交记录'
+    'student-example-stage': '游戏章节内容',
+    'student-example-code': '代码详情',
+    'student-example-record': '提交记录',
+    'student-homework': '作业详情',
+    'student-homework-stage': '游戏章节内容',
+    'student-homework-code': '代码详情',
+    'student-homework-record': '提交记录'
   }
+  static navModeExample = ['student-course', 'student-lesson', 'student-example', 'student-example-stage', 'student-example-record', 'student-example-code']
+  static navModeHomework = ['student-course', 'student-lesson', 'student-homework', 'student-homework-stage', 'student-homework-record', 'student-homework-code']
+  static navModeJudge = ['student-course', 'student-lesson']
 }

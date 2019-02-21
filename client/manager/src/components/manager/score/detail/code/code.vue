@@ -20,7 +20,7 @@
               <td class="table-100">{{item.score}}</td>
               <td class="table-130">{{TimeModule.format('YYYY-MM-DD HH-mm-ss', item.time)}}</td>
               <td class="table-100">
-                <button class="content-show-detail" @click="showCode(item)">查看</button>
+                <button class="content-show-detail" @click="showCode(item, index)">查看</button>
               </td>
             </tr>
           </table>
@@ -29,18 +29,21 @@
       <div class="record-roll-back" @click="rollback">↓</div>
     </div>
     <div class="record-code" v-show="showCodeContent">
-      <div class="code-title">源码</div>
+      <div class="code-title">
+        <p>章节：{{chapter}}，关卡：{{stage}}，提交：第{{submit + 1}}次</p>
+        <p>分数：{{score}}</p>
+      </div>
       <pre>
         <code class="cpp hljs" id="code"></code>
       </pre>
     </div>
     <div class="record-result" v-show="showCodeContent">
-      <div class="result-title">运行结果</div>
-      <textarea class="result-content" readonly v-model="result"></textarea>
+      <p class="result-title">运行结果：</p>
+      <p class="result-content">{{result}}</p>
     </div>
     <div class="record-output" v-show="showCodeContent">
-      <div class="output-title">输出结果</div>
-      <textarea class="output-content" readonly v-model="output"></textarea>
+      <p class="output-title">输出：</p>
+      <p class="output-content">{{output}}</p>
     </div>
   </section>
   <!-- s  -->
@@ -61,14 +64,14 @@ export default {
       TimeModule: Time,
       result: '',
       output: '',
-      table: []
+      score: 0,
+      table: [],
+      chapter: Communication.detail.chapter,
+      submit: -1,
+      stage: Communication.detail.stage
     }
   },
-  components: {
-    // include components
-  },
   created () {
-    // this.getCode()
     this.getGameStageRecode()
   },
   methods: {
@@ -88,7 +91,8 @@ export default {
       }).default(() => {
       })
     },
-    showCode (item) {
+    showCode (item, index) {
+      this.submit = index
       this.showCodeContent = true
       Http.send({
         url: 'SourceCode',
@@ -98,6 +102,8 @@ export default {
       }).success(data => {
         this.result = data.result || ''
         this.output = data.output || ''
+        this.score = data.score
+        this.success = data.success
         let codeDom = document.getElementById('code')
         let $ = window.$
         $('code').text(data.code || '')

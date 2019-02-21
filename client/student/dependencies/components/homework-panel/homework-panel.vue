@@ -50,11 +50,19 @@ export default {
   },
   created () {
     this.refreshStatus()
+    console.log(this.$route.name)
   },
   methods: {
     showStage (item) {
       Communication.stage = item
-      Router.push(`student-stage`)
+      switch (this.$route.name) {
+        case 'student-example':
+          Router.push(`student-example-stage`)
+          break
+        case 'student-homework':
+          Router.push(`student-homework-stage`)
+          break
+      }
     },
     gotoPage (item) {
       let url = `${window.gameUrl}?`

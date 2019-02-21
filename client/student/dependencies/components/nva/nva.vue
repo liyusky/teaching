@@ -10,6 +10,7 @@
 // include dependence
 import Router from '../../modules/Router.class.js'
 import Storage from '../../modules/Storage.class.js'
+import Dictionary from '../../modules/Dictionary.class.js'
 
 export default {
   name: 'NvaComponent',
@@ -17,8 +18,8 @@ export default {
     return {
       nav: [{
         name: '课程列表',
-        page: 'student'
-      }]
+        page: 'student-course'
+      }],
     }
   },
   created () {
@@ -27,6 +28,23 @@ export default {
   watch: {
     '$store.state.nav' (value) {
       this.nav = value
+    },
+    '$route'(to, from) {
+      let nav = Dictionary.navModeExample
+      if (Dictionary.navModeHomework.indexOf(to.name) !== -1) nav = Dictionary.navModeHomework
+
+      let index = nav.indexOf(to.name)
+      if (index > -1) {
+        let result = []
+        for (let i = 0; i <= index; i++) {
+          result.push({
+            name: Dictionary.page[nav[i]],
+            page: nav[i]
+          })
+        }
+        this.nav = result
+        Storage.nav = result
+      }
     }
   },
   methods: {

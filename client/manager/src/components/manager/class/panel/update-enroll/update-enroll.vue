@@ -77,6 +77,8 @@ export default {
     this.status = panel.status
     this.organization = panel.organization.name
     this.student = `${panel.studentDetail.name}（${panel.studentDetail.phone}）`
+    panel.page = 'update-enroll'
+    Communication.panel = panel
   },
   methods: {
     selectStudent () {

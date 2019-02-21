@@ -21,6 +21,9 @@ export default class TeacherUrl {
   static AddQuestion = '/teacher/add-question'
   static UpdateQuestion = '/teacher/update-question'
 
+  static AddComment = '/teacher/add-comment'
+  static UpdateComment = '/teacher/update-comment'
+
   static GameChapterList = '/teacher/game-chapter-list'
 
   static ExampleList = '/teacher/example-list'

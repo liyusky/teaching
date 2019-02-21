@@ -25,24 +25,9 @@ export default new Router({
       component: StudentComponent,
       children: [
         {
-          path: '/student/code',
-          name: 'student-code',
-          component: CodeComponent
-        },
-        {
           path: '/student/course',
           name: 'student-course',
           component: CourseComponent
-        },
-        {
-          path: '/student/example',
-          name: 'student-example',
-          component: ExampleComponent
-        },
-        {
-          path: '/student/homework',
-          name: 'student-homework',
-          component: HomeworkComponent
         },
         {
           path: '/student/lesson',
@@ -50,14 +35,44 @@ export default new Router({
           component: LessonComponent
         },
         {
-          path: '/student/record',
-          name: 'student-record',
+          path: '/student/example',
+          name: 'student-example',
+          component: ExampleComponent
+        },
+        {
+          path: '/student/example-stage',
+          name: 'student-example-stage',
+          component: StageComponent
+        },
+        {
+          path: '/student/example-code',
+          name: 'student-example-code',
+          component: CodeComponent
+        },
+        {
+          path: '/student/example-record',
+          name: 'student-example-record',
           component: RecordComponent
         },
         {
-          path: '/student/stage',
-          name: 'student-stage',
+          path: '/student/homework',
+          name: 'student-homework',
+          component: HomeworkComponent
+        },
+        {
+          path: '/student/homework-stage',
+          name: 'student-homework-stage',
           component: StageComponent
+        },
+        {
+          path: '/student/homework-code',
+          name: 'student-homework-code',
+          component: CodeComponent
+        },
+        {
+          path: '/student/homework-record',
+          name: 'student-homework-record',
+          component: RecordComponent
         }
       ],
       redirect: '/student/course'

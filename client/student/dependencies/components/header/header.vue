@@ -45,7 +45,7 @@ export default {
       Display.panel = 'user-update-user'
     },
     openDetail () {
-      this.nav = true
+      this.nav = !this.nav
     },
     quit () {
       Http.send({

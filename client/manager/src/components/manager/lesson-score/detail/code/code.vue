@@ -68,6 +68,9 @@ export default {
     // include components
   },
   created () {
+    console.log(111111111111111)
+    console.log(Communication.detail)
+    console.log(111111111111111)
     this.getGameStageRecode()
   },
   methods: {

@@ -5,7 +5,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
 
-from teaching.models import User
+from teaching.models import User, Comment
 # from teaching.serializers import GetHomeworkDetailSerializer
 
 from teaching.captcha import Captcha
@@ -77,7 +77,9 @@ class SourceCode(ValidApiView):
                 response.data = {
                     'code': record.origin_code,
                     'result': record.result,
-                    'output': record.output
+                    'output': record.output,
+                    'score': record.score,
+                    'success': record.success
                 }
         except Exception as e:
             response.refresh(code=602, description=10557, error=e.__str__())
@@ -90,10 +92,10 @@ class SourceCode(ValidApiView):
 class CommentSingle(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
     permission_classes = [IsAuthenticated, ]
-    process_list = ['exist-student']
-    format_keys = ['sid', 'hid']
+    process_list = ['exist-student', 'exist-homework']
+    format_keys = ['student', 'hid']
     check_list = {
-        'sid': 'id',
+        'student': 'id',
         'hid': 'id'
     }
 
@@ -107,8 +109,11 @@ class CommentSingle(ValidApiView):
             return Response(detail.content(), status=status.HTTP_406_NOT_ACCEPTABLE)
 
         try:
-            comment = Comment.objects.filter(homework=params['hid'], student=params['sid'])
-            response.data = CommentSerializer(comment, many=True).data
+            comment = Comment.objects.filter(homework=params['hid'], student=params['student'])
+            if comment.exists():
+                response.data = CommentSerializer(comment[0]).data
+            else:
+                response.data = {}
         except Exception as e:
             response.refresh(code=602, description=10503, error=e.__str__())
             state = status.HTTP_500_INTERNAL_SERVER_ERROR

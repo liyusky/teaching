@@ -65,8 +65,17 @@ export default {
   },
   methods: {
     showRecode (item) {
-      Communication.record = item
-      Router.push('student-record')
+      let content = {...item}
+      content.chapter = Communication.stage.detail.chapter
+      Communication.record = content
+      switch (this.$route.name) {
+        case 'student-example-stage':
+          Router.push(`student-example-record`)
+          break
+        case 'student-homework-stage':
+          Router.push(`student-homework-record`)
+          break
+      }
     },
     getTable () {
       this.stageMark = false

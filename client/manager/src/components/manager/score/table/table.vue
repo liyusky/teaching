@@ -49,6 +49,7 @@ export default {
       current: 0,
       gsids: [],
       games: [],
+      chapter: '',
       max: 0
       // DictionaryModule: Dictionary
       // start datas
@@ -78,6 +79,7 @@ export default {
       }
     },
     getScoreList (gcid, oid, question) {
+      this.chapter = question.detail.chapter
       if (gcid <= 0) return
       if (oid <= 0) return
       Http.send({
@@ -125,7 +127,6 @@ export default {
           map[sid][item.gsid] = stages[item.gsid]
         })
       }
-      console.log(map)
       data.student.forEach(item => {
         let source = {
           ...item.studentDetail,
@@ -171,6 +172,8 @@ export default {
         course: this.course,
         lesson: this.lesson,
         gsid: this.gsids[this.current + index - 1],
+        chapter: this.chapter,
+        stage: this.stages[this.current + index - 1],
         component: 'code'
       }
       Communication.detail = item

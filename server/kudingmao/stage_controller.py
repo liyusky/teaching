@@ -78,7 +78,7 @@ def isChapterUnlocked(user, chapter_id):
     # if userchapter.unlock:
     #     return True
     # return False
-    return False
+    return True
 
 
 def isChapterFinished(user, chapter_id):

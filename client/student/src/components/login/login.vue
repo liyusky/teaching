@@ -14,7 +14,7 @@
         <li class="list-item border-1">
           <input class="item-input" v-model="phone" type="text" maxlength="11" placeholder="请输入账号" @keyup.enter="submit">
         </li>
-        <li class="list-item border-1" v-show="!smsMode">
+        <li class="list-item border-1" v-show="!smsMode || status == 'forget-password' || status == 'register'">
           <input class="item-input" v-model="password" type="password" maxlength="20" placeholder="请输入密码" @keyup.enter="submit">
         </li>
         <li class="list-item border-1">
@@ -233,7 +233,7 @@ export default {
     },
     loginSuccess () {
       if (this.notAuthMode) {
-        Router.push('student')
+        Router.push('student-course')
         if (!Account.name) Display.panel = 'user-update-user'
       } else {
         if (Account.uid * 1 !== this.urlParams.user * 1) {
@@ -271,10 +271,7 @@ export default {
         }
       }).success(data => {
         Account.info = data
-        Router.push('student')
-        // if (!data.name || !data.school) {
-        //   Display.panel = 'user-update-user'
-        // }
+        Router.push('student-course')
         if (!data.name) Display.panel = 'user-update-user'
         alert('注册成功，您可以双击右上角修改个人信息')
       }).fail(data => {
@@ -323,6 +320,7 @@ export default {
       window.localStorage.removeItem('nav')
       window.localStorage.removeItem('account')
       window.localStorage.removeItem('communication')
+      window.localStorage.removeItem('navMode')
     },
     setAuthInit () {
       let params = this.getRequestParams()

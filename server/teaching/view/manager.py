@@ -1,4 +1,6 @@
 import copy
+import json
+
 from django.contrib.auth.models import User
 from django.db.models import Q
 
@@ -80,14 +82,18 @@ class AddClass(ValidApiView):
     def extra(self, request, detail):
         params = request.data
         response = ResponseContent(code=401, description=10552, error=10552)
-        classes = Cls.objects.filter(
-            name=params['name'],
-            teacher=params['teacher'],
-            start_time=params['launch'],
-            end_time=params['deadline']
-        )
-        if not classes.exists():
-            response = True
+        try:
+            classes = Cls.objects.filter(
+                name=params['name'],
+                teacher=params['teacher'],
+                start_time=params['launch'],
+                end_time=params['deadline']
+            )
+            if not classes.exists():
+                response = True
+        except Exception as e:
+            return ResponseContent(code=602, description=10507, error=e.__str__())
+
         return response
 
 
@@ -194,9 +200,14 @@ class AddPlan(ValidApiView):
     def extra(self, request, detail):
         params = request.data
         response = ResponseContent(code=401, description=10138, error=10138)
-        plan = ClsCourse.objects.filter(cls=params['oid'], course=params['cid'])
-        if not plan.exists():
-            response = True
+
+        try:
+            plan = ClsCourse.objects.filter(cls=params['oid'], course=params['cid'])
+            if not plan.exists():
+                response = True
+        except Exception as e:
+            return ResponseContent(code=602, description=10510, error=e.__str__())
+
         return response
 
 class UpdatePlan(ValidApiView):
@@ -237,10 +248,13 @@ class UpdatePlan(ValidApiView):
         plan = detail['plan']
         params = request.data
 
-        if 'cid' in params:
-            plan = ClsCourse.objects.filter(cls=plan.cls, course=params['cid'])
-            if plan.exists():
-                response = ResponseContent(code=401, description=10138, error=10138)
+        try:
+            if 'cid' in params:
+                plan = ClsCourse.objects.filter(cls=plan.cls, course=params['cid'])
+                if plan.exists():
+                    response = ResponseContent(code=401, description=10138, error=10138)
+        except Exception as e:
+            return ResponseContent(code=602, description=10511, error=e.__str__())
 
         # if 'cid' in params and 'oid' in params:
         #     response = ResponseContent(code=401, description=10139, error=10139)
@@ -287,28 +301,45 @@ class EnrollList(ValidApiView):
 class AddEnroll(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
     permission_classes = [IsAuthenticated, ManagerPermission, ]
-    process_list = ['exist-class', 'exist-student']
-    format_keys = ['oid', 'student', 'status', ]
+    process_list = ['exist-class',]
+    format_keys = ['oid', ]
     check_list = {
-        'oid': 'id',
-        'student': 'id',
-        'status': 'range4',
+        'oid': 'id'
     }
 
     def post(self, request, *args, **kwargs):
         response = ResponseContent(code=200, token=request.auth, description=12015)
         state = status.HTTP_200_OK
+        params = request.data
 
         detail = self.readiness(request)
         if isinstance(detail, ResponseContent):
             return Response(detail.content(), status=status.HTTP_406_NOT_ACCEPTABLE)
 
-        serializer = EnrollSerializer(data=self.formatData(request), partial=True)
-        if serializer.is_valid():
-            serializer.save()
-        else:
-            response.refresh(code=604, description=10513, error=serializer.errors)
-            state = status.HTTP_500_INTERNAL_SERVER_ERROR
+
+        extra = detail['extra']
+        failer = 0
+        successer = 0
+
+        for sid in extra['students']:
+            serializer = EnrollSerializer(data={
+                'cls': params['oid'],
+                'creater': request.user.id,
+                'student': sid,
+                'status': 1,
+            }, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                successer += 1
+                print(successer)
+            else:
+                failer += 1
+
+        extra['fail'] = failer
+        extra['success'] = successer
+        del extra['students']
+
+        response.data = extra
 
         return Response(response.content(), status=state)
 
@@ -323,9 +354,33 @@ class AddEnroll(ValidApiView):
         response = True
         params = request.data
 
-        enroll = ClsStudent.objects.filter(cls=params['oid'], student=params['student'])
-        if enroll.exists():
-            response = ResponseContent(code=401, description=10140, error=10140)
+        student = json.loads(params['student'])
+
+        if not isinstance(student, list):
+            return ResponseContent(code=401, description=10154, error=10154)
+
+        used = 0
+        errorer = 0
+        students = []
+        try:
+            for sid in student:
+                user = User.objects.filter(id=sid)
+                if user.exists() and hasattr(user[0], 'userteachingprofile') and user[0].userteachingprofile.role == 0:
+                    enroll = ClsStudent.objects.filter(cls=params['oid'], student=sid)
+                    if enroll.exists():
+                        used += 1
+                    else:
+                        students.append(sid)
+                else:
+                    errorer += 1
+
+            response = {
+                'used': used,
+                'error': errorer,
+                'students': tuple(students),
+            }
+        except Exception as e:
+            return ResponseContent(code=602, description=10513, error=e.__str__())
 
         return response
 
@@ -371,8 +426,12 @@ class UpdateEnroll(ValidApiView):
         # if 'oid' in params and ClsStudent.objects.filter(cls=params['cid'], student=enroll.student).exists():
         #     response = ResponseContent(code=401, description=10140, error=10140)
 
-        if 'student' in params and ClsStudent.objects.filter(cls=enroll.cls, student=params['student']).exists():
-            response = ResponseContent(code=401, description=10140, error=10140)
+
+        try:
+            if 'student' in params and ClsStudent.objects.filter(cls=enroll.cls, student=params['student']).exists():
+                response = ResponseContent(code=401, description=10140, error=10140)
+        except Exception as e:
+            return ResponseContent(code=602, description=10514, error=e.__str__())
 
         return response
 
@@ -624,9 +683,14 @@ class AddCurriculum(ValidApiView):
     def extra(self, request, detail):
         response = True
         params = request.data
-        curriculum = Curriculum.objects.filter(cls=params['oid'], lesson=params['lid'])
-        if curriculum.exists():
-            response = ResponseContent(code=401, description=10142, error=10142)
+
+        try:
+            curriculum = Curriculum.objects.filter(cls=params['oid'], lesson=params['lid'])
+            if curriculum.exists():
+                response = ResponseContent(code=401, description=10142, error=10142)
+        except Exception as e:
+            return ResponseContent(code=602, description=10522, error=e.__str__())
+
         return response
 
 
@@ -664,12 +728,15 @@ class UpdateCurriculum(ValidApiView):
         return Response(response.content(), status=state)
 
     def extra(self, request, detail):
-        print(detail)
         response = True
         params = request.data
         curriculum = detail['curriculum']
-        if 'lid' in params and Curriculum.objects.filter(cls=curriculum.cls, lesson=params['lid']).exists():
-            response = ResponseContent(code=401, description=10142, error=10142)
+
+        try:
+            if 'lid' in params and Curriculum.objects.filter(cls=curriculum.cls, lesson=params['lid']).exists():
+                response = ResponseContent(code=401, description=10142, error=10142)
+        except Exception as e:
+            return ResponseContent(code=602, description=10523, error=e.__str__())
 
         return response
 
@@ -1127,22 +1194,28 @@ class AddQuestion(ValidApiView):
     def extra(self, request, detail):
         response = True
         params = request.data
-        question = HomeworkDetail.objects.filter(
-            homework=params['hid'],
-            gametype=params['gametype'],
-            gcid=params['gcid'],
-            # gsid=params['gsid']
-        )
-        if question.exists():
-            response = ResponseContent(code=401, description=10143, error=10143)
 
-        question = HomeworkDetail.objects.filter(
-            homework=params['hid'],
-            idx=params['idx']
-        )
 
-        if question.exists():
-            response = ResponseContent(code=401, description=10600, error=10600)
+        try:
+            question = HomeworkDetail.objects.filter(
+                homework=params['hid'],
+                gametype=params['gametype'],
+                gcid=params['gcid'],
+                # gsid=params['gsid']
+            )
+            if question.exists():
+                response = ResponseContent(code=401, description=10143, error=10143)
+
+            question = HomeworkDetail.objects.filter(
+                homework=params['hid'],
+                idx=params['idx']
+            )
+
+            if question.exists():
+                response = ResponseContent(code=401, description=10600, error=10600)
+        except Exception as e:
+            return ResponseContent(code=602, description=10534, error=e.__str__())
+
         return response
 
 
@@ -1202,22 +1275,27 @@ class UpdateQuestion(ValidApiView):
             idx = params['idx']
 
 
-        # if 'gametype' in params or 'gcid' in params or 'gsid' in params:
-        if 'gametype' in params or 'gcid' in params:
-            condition = Q(homework=homework) & Q(gametype=gametype) & Q(gcid=gcid)
-            question = HomeworkDetail.objects.filter(condition)
+        try:
+            # if 'gametype' in params or 'gcid' in params or 'gsid' in params:
+            if 'gametype' in params or 'gcid' in params:
+                condition = Q(homework=homework) & Q(gametype=gametype) & Q(gcid=gcid)
+                question = HomeworkDetail.objects.filter(condition)
 
-            if question.exists():
-                response = ResponseContent(code=401, description=10143, error=10143)
+                if question.exists():
+                    response = ResponseContent(code=401, description=10143, error=10143)
 
-        if 'idx' in params:
-            condition = Q(homework=homework) & Q(idx=idx)
-            question = HomeworkDetail.objects.filter(condition)
+            if 'idx' in params:
+                condition = Q(homework=homework) & Q(idx=idx)
+                question = HomeworkDetail.objects.filter(condition)
 
-            if question.exists():
-                response = ResponseContent(code=401, description=10600, error=10600)
+                if question.exists():
+                    response = ResponseContent(code=401, description=10600, error=10600)
+
+        except Exception as e:
+            return ResponseContent(code=602, description=10535, error=e.__str__())
 
         return response
+
 
 
 
@@ -1451,21 +1529,26 @@ class AddExample(ValidApiView):
         response = True
         params = request.data
 
-        example = LessonDetail.objects.filter(
-            lesson=params['lid'],
-            gametype=params['gametype'],
-            gcid=params['gcid'],
-        )
-        if example.exists():
-            response = ResponseContent(code=401, description=10145, error=10145)
+        try:
+            example = LessonDetail.objects.filter(
+                lesson=params['lid'],
+                gametype=params['gametype'],
+                gcid=params['gcid'],
+            )
+            if example.exists():
+                response = ResponseContent(code=401, description=10145, error=10145)
 
-        example = LessonDetail.objects.filter(
-            lesson=params['lid'],
-            idx=params['idx']
-        )
+            example = LessonDetail.objects.filter(
+                lesson=params['lid'],
+                idx=params['idx']
+            )
 
-        if example.exists():
-            response = ResponseContent(code=401, description=10600, error=10600)
+            if example.exists():
+                response = ResponseContent(code=401, description=10600, error=10600)
+
+        except Exception as e:
+            return ResponseContent(code=602, description=10542, error=e.__str__())
+
         return response
 
 
@@ -1524,21 +1607,23 @@ class UpdateExample(ValidApiView):
         if 'idx' in params:
             idx = params['idx']
 
+        try:
+            if 'gametype' in params or 'gcid' in params:
+                condition = Q(lesson=lesson) & Q(gametype=gametype) & Q(gcid=gcid)
+                example = LessonDetail.objects.filter(condition)
 
-        # if 'gametype' in params or 'gcid' in params or 'gsid' in params:
-        if 'gametype' in params or 'gcid' in params:
-            condition = Q(lesson=lesson) & Q(gametype=gametype) & Q(gcid=gcid)
-            example = LessonDetail.objects.filter(condition)
+                if example.exists():
+                    response = ResponseContent(code=401, description=10145, error=10145)
 
-            if example.exists():
-                response = ResponseContent(code=401, description=10145, error=10145)
+            if 'idx' in params:
+                condition = Q(lesson=lesson) & Q(idx=idx)
+                example = LessonDetail.objects.filter(condition)
 
-        if 'idx' in params:
-            condition = Q(lesson=lesson) & Q(idx=idx)
-            example = LessonDetail.objects.filter(condition)
+                if example.exists():
+                    response = ResponseContent(code=401, description=10600, error=10600)
 
-            if example.exists():
-                response = ResponseContent(code=401, description=10600, error=10600)
+        except Exception as e:
+            return ResponseContent(code=602, description=10542, error=e.__str__())
 
         return response
 
@@ -1617,11 +1702,11 @@ class ExampleScoreList(ValidApiView):
 class AddComment(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
     permission_classes = [IsAuthenticated, ManagerPermission, ]
-    process_list = ['exist-student', 'exist-teacher', 'exist-homework']
-    format_keys = ['sid', 'tid', 'hid', 'content']
+    process_list = ['exist-student', 'exist-homework']
+    format_keys = ['student', 'hid', 'content']
     check_list = {
-        'sid': 'id',
-        'tid': 'id',
+        'student': 'id',
+        # 'tid': 'id',
         'hid': 'id'
     }
 
@@ -1634,7 +1719,7 @@ class AddComment(ValidApiView):
         if isinstance(detail, ResponseContent):
             return Response(detail.content(), status=status.HTTP_406_NOT_ACCEPTABLE)
 
-        serializer = CommentSerializer(data=request.data, partial=True)
+        serializer = CommentSerializer(data=self.formatData(request), partial=True)
         if serializer.is_valid():
             serializer.save()
         else:
@@ -1642,6 +1727,13 @@ class AddComment(ValidApiView):
             state = status.HTTP_501_NOT_IMPLEMENTED
 
         return Response(response.content(), status=state)
+
+    def formatData(self, request):
+        result = {}
+        for key in request.data:
+            result[key] = request.data[key]
+        result['homework'] = request.data['hid']
+        return result
 
 
 class UpdateComment(ValidApiView):

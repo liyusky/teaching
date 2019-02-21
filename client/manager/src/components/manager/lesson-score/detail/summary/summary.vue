@@ -27,25 +27,6 @@
         </table>
       </div>
     </div>
-    <!-- <p class="detail-valuation" v-show="!evaluate">
-      <span class="fz-24">评语：</span>
-      <span class="fz-18">{{comment}}</span>
-    </p>
-    <div class="detail-comment" v-show="evaluate">
-      <p class="comment-title fz-24 color-dark">
-        <i></i>
-        <span>评语：</span>
-      </p>
-      <textarea class="comment-input fz-18" v-model="comment"></textarea>
-    </div>
-    <div class="detail-btns">
-      <button class="btn btn-submit fz-15 color-white" v-show="evaluate" @click="submitComment">
-        <div>提交</div>
-      </button>
-      <button class="btn btn-update fz-15 color-white" v-show="!evaluate" @click="updateEdit">
-        <div>更新</div>
-      </button>
-    </div> -->
   </section>
   <!-- s  -->
 </template>
@@ -69,61 +50,9 @@ export default {
     // include components
   },
   created () {
-    this.homework = this.formatData({...Communication.detail})
-    // this.getComment()
-    // this.init()
+    this.formatData({...Communication.detail})
   },
   methods: {
-    // submitComment () {
-    //   this.evaluate = false
-    //   if (this.commentId !== '') {
-    //     Http.send({
-    //       url: 'UpdateComment',
-    //       data: {
-    //         comment: this.commentId,
-    //         content: this.comment
-    //       }
-    //     }).success(data => {
-    //     }).fail(data => {
-    //       console.log(data)
-    //     })
-    //   } else {
-    //     Http.send({
-    //       url: 'AddComment',
-    //       data: {
-    //         hid: Communication.detail.hid,
-    //         homework: Communication.detail.hid,
-    //         sid: Communication.detail.student,
-    //         tid: Account.upid,
-    //         content: this.comment
-    //       }
-    //     }).success(data => {
-    //       this.getComment()
-    //     }).fail(data => {
-    //       console.log(data)
-    //     })
-    //   }
-    // },
-    // getComment () {
-    //   Http.send({
-    //     url: 'CommentSingle',
-    //     data: {
-    //       hid: Communication.detail.hid,
-    //       sid: Communication.detail.student,
-    //       tid: Account.upid
-    //     }
-    //   }).success(data => {
-    //     if (data.length) {
-    //       this.comment = data[0].content
-    //       this.commentId = data[0].comment
-    //     }
-    //   }).fail(data => {
-    //     console.log(data)
-    //   })
-    // },
-    // updateEdit () {
-    //   this.evaluate = true
-    // },
     formatData (data) {
       let sum = 0
       let max = 0

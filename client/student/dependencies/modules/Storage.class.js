@@ -16,6 +16,10 @@ export default class Storage {
     return nav
   }
 
+  static set nav (nav) {
+    this.save('nav', nav)
+  }
+
   static save (item, value) {
     window.main.$store.commit(item, value)
     try {

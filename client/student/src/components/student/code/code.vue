@@ -2,19 +2,22 @@
   <!-- s  -->
   <section class="commit-record">
     <div class="record-code">
-      <div class="code-title">源码</div>
+      <div class="code-title">
+        <p>章节：{{origin.chapter}}，关卡：{{origin.stage}}，提交：第{{origin.submit + 1}}次</p>
+        <p>分数：{{score}}</p>
+      </div>
       <pre>
         <code class="cpp hljs" id="code">
         </code>
       </pre>
     </div>
     <div class="record-result">
-      <div class="result-title">运行结果</div>
-      <textarea class="result-content" readonly v-model="result"></textarea>
+      <p class="result-title">运行结果：</p>
+      <p class="result-content">{{result}}</p>
     </div>
     <div class="record-output">
-      <div class="output-title">输出结果</div>
-      <textarea class="output-content" readonly v-model="output"></textarea>
+      <p class="output-title">输出：</p>
+      <p class="output-content">{{output}}</p>
     </div>
   </section>
   <!-- s  -->
@@ -32,7 +35,10 @@ export default {
     return {
       code: '',
       result: '',
-      output: ''
+      output: '',
+      origin: Communication.code,
+      score: 0,
+      success: 0
       // start params
       // end params
     }
@@ -54,6 +60,8 @@ export default {
       }).success(data => {
         this.result = data.result || ''
         this.output = data.output || ''
+        this.score = data.score
+        this.success = data.success
         let codeDom = document.getElementById('code')
         let $ = window.$
         $('code').text(data.code || '')

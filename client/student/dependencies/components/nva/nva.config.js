@@ -9,7 +9,7 @@ module.exports = {
     Account: false,
     Check: false,
     Communication: false,
-    Dictionary: false,
+    Dictionary: true,
     Display: false,
     Http: false,
     Router: true,

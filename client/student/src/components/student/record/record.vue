@@ -19,7 +19,7 @@
             <td class="table-100">{{item.score}}</td>
             <td class="table-130">{{TimeModule.format('YYYY-MM-DD HH-mm-ss', item.time)}}</td>
             <td class="table-100">
-              <button class="content-show-detail" @click="showCode(item)">查看</button>
+              <button class="content-show-detail" @click="showCode(item, index)">查看</button>
             </td>
           </tr>
         </table>
@@ -55,9 +55,20 @@ export default {
     this.getGameStageRecode()
   },
   methods: {
-    showCode (item) {
-      Communication.code = item
-      Router.push('student-code')
+    showCode (item, index) {
+      let content = {...item}
+      content.chapter = Communication.record.chapter
+      content.stage = Communication.record.name
+      content.submit = index
+      Communication.code = content
+      switch (this.$route.name) {
+        case 'student-example-record':
+          Router.push(`student-example-code`)
+          break
+        case 'student-homework-record':
+          Router.push(`student-homework-code`)
+          break
+      }
     },
     getGameStageRecode () {
       Http.send({

@@ -443,7 +443,7 @@ class Exist(object):
         try:
             comment = Comment.objects.filter(id=params['comment'])
             if comment.exists():
-                response = example.first()
+                response = comment.first()
         except Exception as e:
             response.refresh(code=602, description=10816, error=e.__str__())
         return response
@@ -758,6 +758,7 @@ class ValidApiView(APIView, HasParams, FormatParams, Exist, CheckImageCode):
             print('-----------------extra-----------------')
             match = getattr(self, 'extra')
             extra = match(request, self.detail)
+            self.detail['extra'] = extra
             if isinstance(extra, ResponseContent):
                 extra.refresh(token=request.auth)
                 return extra

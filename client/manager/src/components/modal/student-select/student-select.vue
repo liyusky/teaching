@@ -3,15 +3,15 @@
   <section class="student-select">
     <div class="select-header">
       <p class="header-title">选择学员</p>
-      <SearchBarComponent @SEARCH_EVENT="search" @REFRESH_EVENT="refresh"></SearchBarComponent>
+      <SearchBarComponent @SEARCH_EVENT="search" :placeholder="'请输入姓名'" :notNeedRefresh="true"></SearchBarComponent>
       <div class="header-close" @click="cancel">
         <i>x</i>
       </div>
     </div>
     <div class="select-content">
       <ul class="content-list">
-        <li class="list-item fl" v-for="(item, index) in students" :key="index" @click="select(item)">
-          <div class="item-warp">
+        <li class="list-item fl" v-for="(item, index) in table" :key="index" @click="select(item, index)">
+          <div class="item-warp" :class="{'selected': item.selected}">
             <img class="warp-portrait" src="">
             <p class="warp-name">{{item.detail.realname}}</p>
             <p class="warp-phone">{{item.phone}}</p>
@@ -20,6 +20,10 @@
         </li>
       </ul>
     </div>
+    <section class="select-operation" v-show="mode">
+      <button class="btns-confirm" @click="confirm">确认</button>
+      <button class="btns-cancel" @click="cancel">取消</button>
+    </section>
   </section>
   <!-- s  -->
 </template>
@@ -31,52 +35,68 @@ import Communication from '../../../../dependencies/modules/Communication.class.
 import Display from '../../../../dependencies/modules/Display.class.js'
 import Http from '../../../../dependencies/modules/Http.class.js'
 import SearchBarComponent from '../../../../dependencies/components/search-bar/search-bar.vue'
+import BtnComponent from '../../../../dependencies/components/btn/btn.vue'
 
 export default {
   name: 'StudentSelectModalComponent',
   data () {
     return {
-      students: []
+      students: [],
+      table: [],
+      content: {},
+      mode: false,
       // start datas
+      btn: {
+        type: 'operation'
+      }
       // end datas
     }
   },
   components: {
     // include chunk
-    SearchBarComponent
+    SearchBarComponent,
+    BtnComponent
   },
   created () {
     this.getStudentList()
+    if (Communication.panel.page === 'add-enroll') {
+      this.mode = true
+      this.select = this.multipleSelect
+    } else if (Communication.panel.page === 'update-enroll') {
+      this.mode = false
+      this.select = this.singleSelect
+    }
   },
   methods: {
-    // getCollege (detail) {
-    //   if ('college' in detail) {
-    //     return `${detail.college.name}${detail.college.district && detail.college.district !== 'null' ? detail.college.district : ''}${Dictionary.rank[detail.college.level]}`
-    //   } else {
-    //     return '未设置'
-    //   }
-    // },
+    confirm () {
+      Communication.modal = Object.values(this.content)
+      this.cancel()
+    },
     cancel () {
       Display.modal = false
     },
-    select (item) {
+    select (item, index) {},
+    multipleSelect (item, index) {
+      this.$set(this.table[index], 'selected', !item.selected)
+      item.selected ? this.content[item.user] = item : delete this.content[item.user]
+    },
+    singleSelect (item, index) {
       Communication.modal = item
       this.cancel()
     },
-    refresh (keywords) {
-      this.getStudentList(keywords)
-    },
     search (keywords) {
-      this.getStudentList(keywords)
+      let table = []
+      this.students.forEach(item => {
+        if (item.detail.realname.indexOf(keywords) !== -1) table.push(item)
+      })
+      this.table = table
     },
-    getStudentList (keywords) {
-      let data = {}
-      if (keywords) data.keywords = keywords
+    getStudentList () {
       Http.send({
-        url: 'StudentList',
-        data: data
+        url: 'StudentList'
       }).success(data => {
         this.students = data
+        this.table = data
       }).fail(data => {
       }).default(() => {
         Display.api = false

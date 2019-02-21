@@ -147,6 +147,9 @@ url_teachers = [
     # 游戏章节控制
     url(r'^teacher/open-chapter$', teachers.GameStageOpenChapter.as_view()),
     url(r'^teacher/game-is-unlock$', teachers.GameStageIsUnlock.as_view()),
+    # 评论
+    url(r'^teacher/add-comment$', teachers.AddComment.as_view()),
+    url(r'^teacher/update-comment$', teachers.UpdateComment.as_view()),
 ]
 
 url_all.extend(url_auth)

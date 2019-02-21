@@ -4,7 +4,7 @@
 // current sass
 .student-select {
   width: 740px;
-  height: 540px;
+  height: 590px;
   background-color: #fff;
   border-radius: 5px;
   .select-header {
@@ -79,9 +79,42 @@
           background-color: #eee;
         }
       }
+      .selected {
+        background-color: #acd2ae !important;
+      }
     }
   }
   .select-content::-webkit-scrollbar {
     width: 0 !important
+  }
+  .select-operation {
+    @include horizontal_end();
+    width: 100%;
+    height: 50px;
+    padding: {
+      top: 7px;
+      bottom: 7px;
+      right: 10px;
+    }
+    .btns-confirm, .btns-cancel {
+      height: 100%;
+      padding: {
+        left: 15px;
+        right: 15px;
+      }
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .btns-confirm {
+      background-color: #137c1a;
+    }
+
+    .btns-cancel {
+      background-color: #d53333;
+      margin: {
+        left: 20px;
+      }
+    }
   }
 }

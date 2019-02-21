@@ -14,7 +14,6 @@ export default class Dictionary {
     2: '教师'
   }
   static notNeedTokenApi = ['LoginByPassword', 'LoginBySMS', 'ForgetPassword', 'Register', 'SMSCaptcha']
-  static baseUrl = 'http://192.168.1.5:8080/teaching'
   static grade = ['未知', '小一', '小二', '小三', '小四', '小五', '小六', '初一', '初二', '初三', '高一', '高二', '高三']
   static role = ['学生', '教学老师', '教务老师', '教务主任', '教学主任', '管理员', 'root']
   static role = {

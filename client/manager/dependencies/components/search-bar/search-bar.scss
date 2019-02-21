@@ -4,7 +4,6 @@
 // current sass
 .search-bar {
   @include vertical_center_horizontal_between();
-  width: 320px;
   height: 36px;
   font-size: 14px;
   .bar-tip {

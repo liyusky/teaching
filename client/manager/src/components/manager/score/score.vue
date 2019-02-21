@@ -88,6 +88,7 @@ export default {
       })
     },
     queryStage (item, index) {
+      console.log(item)
       this.current = index
       this.gcid = item.gcid
       this.$refs.table.getScoreList(this.gcid, this.oid, item)

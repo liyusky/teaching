@@ -217,6 +217,7 @@ class CurriculumList(ValidApiView):
         return response
 
 
+
 class AddCurriculum(ValidApiView):
     authentication_classes = [JSONWebTokenAuthentication, ]
     permission_classes = [IsAuthenticated, TeacherPermission, ]
@@ -276,6 +277,7 @@ class AddCurriculum(ValidApiView):
             return ResponseContent(code=604, description=10522, error=e.__str__())
 
         return True
+
 
 
 class UpdateCurriculum(ValidApiView):
@@ -569,28 +571,31 @@ class AddQuestion(ValidApiView):
         response = True
         params = request.data
 
-        question = HomeworkDetail.objects.filter(
-            homework=params['hid'],
-            homework__curriculum__lesson__course__ClsCourseCourse__teacher=request.user.id
-        )
-        if not question.exists():
-            return ResponseContent(code=401, token=request.auth, description=10602, error=10602)
+        try:
+            question = HomeworkDetail.objects.filter(
+                homework=params['hid'],
+                homework__curriculum__lesson__course__ClsCourseCourse__teacher=request.user.id
+            )
+            if not question.exists():
+                return ResponseContent(code=401, token=request.auth, description=10602, error=10602)
 
-        question = HomeworkDetail.objects.filter(
-            homework=params['hid'],
-            gametype=params['gametype'],
-            gcid=params['gcid'],
-            # gsid=params['gsid']
-        )
-        if question.exists():
-            return ResponseContent(code=401, token=request.auth, description=10143, error=10143)
+            question = HomeworkDetail.objects.filter(
+                homework=params['hid'],
+                gametype=params['gametype'],
+                gcid=params['gcid'],
+                # gsid=params['gsid']
+            )
+            if question.exists():
+                return ResponseContent(code=401, token=request.auth, description=10143, error=10143)
 
-        question = HomeworkDetail.objects.filter(
-            homework=params['hid'],
-            idx=params['idx']
-        )
-        if question.exists():
-            return ResponseContent(code=401, token=request.auth, description=10600, error=10600)
+            question = HomeworkDetail.objects.filter(
+                homework=params['hid'],
+                idx=params['idx']
+            )
+            if question.exists():
+                return ResponseContent(code=401, token=request.auth, description=10600, error=10600)
+        except Exception as e:
+            return ResponseContent(code=602, description=10542, error=e.__str__())
 
         return response
 
@@ -649,29 +654,31 @@ class UpdateQuestion(ValidApiView):
         if 'idx' in params:
             idx = params['idx']
 
+        try:
+            question = HomeworkDetail.objects.filter(
+                id=params['qid'],
+                homework__curriculum__lesson__course__ClsCourseCourse__teacher=request.user.id
+            )
 
-        question = HomeworkDetail.objects.filter(
-            id=params['qid'],
-            homework__curriculum__lesson__course__ClsCourseCourse__teacher=request.user.id
-        )
+            if not question.exists():
+                return ResponseContent(code=401, token=request.auth, description=10602, error=10602)
 
-        if not question.exists():
-            return ResponseContent(code=401, token=request.auth, description=10602, error=10602)
+            # if 'gametype' in params or 'gcid' in params or 'gsid' in params:
+            if 'gametype' in params or 'gcid' in params:
+                condition = Q(homework=homework) & Q(gametype=gametype) & Q(gcid=gcid)
+                question = HomeworkDetail.objects.filter(condition)
 
-        # if 'gametype' in params or 'gcid' in params or 'gsid' in params:
-        if 'gametype' in params or 'gcid' in params:
-            condition = Q(homework=homework) & Q(gametype=gametype) & Q(gcid=gcid)
-            question = HomeworkDetail.objects.filter(condition)
+                if question.exists():
+                    return ResponseContent(code=401, token=request.auth, description=10143, error=10143)
 
-            if question.exists():
-                return ResponseContent(code=401, token=request.auth, description=10143, error=10143)
+            if 'idx' in params:
+                condition = Q(homework=homework) & Q(idx=idx)
+                question = HomeworkDetail.objects.filter(condition)
 
-        if 'idx' in params:
-            condition = Q(homework=homework) & Q(idx=idx)
-            question = HomeworkDetail.objects.filter(condition)
-
-            if question.exists():
-                return ResponseContent(code=401, token=request.auth, description=10600, error=10600)
+                if question.exists():
+                    return ResponseContent(code=401, token=request.auth, description=10600, error=10600)
+        except Exception as e:
+            return ResponseContent(code=602, description=10542, error=e.__str__())
 
 
 
@@ -897,5 +904,70 @@ class GameStageIsUnlock(ValidApiView):
             state = status.HTTP_500_INTERNAL_SERVER_ERROR
 
         response.data = openStatus
+
+        return Response(response.content(), status=state)
+
+
+
+class AddComment(ValidApiView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    process_list = ['exist-student', 'exist-homework']
+    format_keys = ['student', 'hid', 'content']
+    check_list = {
+        'student': 'id',
+        # 'tid': 'id',
+        'hid': 'id'
+    }
+
+    def post(self, request, *args, **kwargs):
+        response = ResponseContent(
+            code=200, token=request.auth, description=12048)
+        state = status.HTTP_200_OK
+
+        detail = self.readiness(request)
+        if isinstance(detail, ResponseContent):
+            return Response(detail.content(), status=status.HTTP_406_NOT_ACCEPTABLE)
+
+        serializer = CommentSerializer(data=self.formatData(request), partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            response.refresh(code=11001, description=10546, error=serializer.errors)
+            state = status.HTTP_501_NOT_IMPLEMENTED
+
+        return Response(response.content(), status=state)
+
+    def formatData(self, request):
+        result = {}
+        for key in request.data:
+            result[key] = request.data[key]
+        result['homework'] = request.data['hid']
+        return result
+
+
+class UpdateComment(ValidApiView):
+    authentication_classes = [JSONWebTokenAuthentication, ]
+    permission_classes = [IsAuthenticated, TeacherPermission, ]
+    process_list = ['exist-comment',]
+    format_keys = ['comment', 'content']
+    check_list = {
+        'comment': 'id',
+    }
+
+    def post(self, request, *args, **kwargs):
+        response = ResponseContent(code=200, token=request.auth, description=12049)
+        state = status.HTTP_200_OK
+
+        detail = self.readiness(request)
+        if isinstance(detail, ResponseContent):
+            return Response(detail.content(), status=status.HTTP_406_NOT_ACCEPTABLE)
+
+        serializer = CommentSerializer(detail['comment'], data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+        else:
+            response.refresh(code=11001, description=10547, error=serializer.errors)
+            state = status.HTTP_500_INTERNAL_SERVER_ERROR
 
         return Response(response.content(), status=state)

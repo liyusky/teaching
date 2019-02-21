@@ -35,6 +35,7 @@ export default {
       cid: 0,
       lid: 0,
       gcid: 0,
+      current: -1,
       organization: '选择班级',
       course: '选择课程',
       lesson: '选择课时'

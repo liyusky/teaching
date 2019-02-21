@@ -23,7 +23,9 @@ module.exports = {
     Url: false
   },
   components: {
-    btn: false,
+    btn: {
+      type: 'operation'
+    },
     'detail-panel': false,
     'image-bg': false,
     inputs: false,
